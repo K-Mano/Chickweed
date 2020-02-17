@@ -1,0 +1,102 @@
+﻿<Window x:Name="disp" x:Class="ITToolKit_3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ITToolKit_3"
+        mc:Ignorable="d"
+        Title="ITToolKit Portable" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="disp_Loaded" Closing="disp_Closing">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        <Grid>
+            <TabControl Margin="10" Grid.Column="0" TabStripPlacement="Top">
+                <TabItem Header="メイン">
+                    <Grid Margin="10">
+                        <TextBlock Text="寮内インターネットの使用及びPC持込許可に必要な情報の取得" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
+                        <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
+                                <TextBlock HorizontalAlignment="Left" Text="アクティブなネットワーク アダプタ  " Background="White"/>
+                            </Grid>
+                            <Grid Height="60">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <StackPanel VerticalAlignment="Center" Margin="20,0" HorizontalAlignment="Left">
+                                        <TextBlock x:Name="adaptername" Text="Wi-Fi Adapter" HorizontalAlignment="Center" FontWeight="Bold"/>
+                                        <TextBlock x:Name="vendorname" Text="Vendor" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Separator Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+                                </StackPanel>
+                                <Grid Grid.Column="2">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0">
+                                        <TextBox x:Name="phynumber" Text="00:00:00:00:00:00" IsReadOnly="True" HorizontalAlignment="Center" Background="Transparent" FontFamily="Consolas" FontSize="13" BorderBrush="Transparent" TextWrapping="Wrap"/>
+                                        <TextBlock Text="(確認: Macアドレスは16進数[0-F])" HorizontalAlignment="Center" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Grid Height="10"/>
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+                                <TextBlock Text="このコンピュータの詳細  " Background="White" HorizontalAlignment="Left"/>
+                            </Grid>
+                            <Grid>
+                                <StackPanel Margin="20">
+                                    <TextBlock x:Name="windows" Text="Microsoft Windows"/>
+                                    <TextBlock x:Name="version" Text="バージョン ---- (OSビルド -----.---)"/>
+                                    <Grid Height="10"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="製造元: "/>
+                                            <TextBlock Text="機種名: "/>
+                                            <Grid Height="20"/>
+                                            <TextBlock Text="総合評価: "/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock x:Name="maker" Text="Maker"/>
+                                            <TextBlock x:Name="sysname" Text="Name"/>
+                                            <Grid Height="20"/>
+                                            <TextBlock x:Name="evaluation" Text="申請許可" Foreground="Green" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <StackPanel>
+                                        <Grid Height="20"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="reset" Content="再評価(_R)" Width="90" Click="reset_Click"/>
+                                            <Grid Width="10"/>
+                                            <Button x:Name="savedialog" Content="評価を保存(_A)" Width="90" Click="save_Click"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="その他の機能">
+                    <Grid Margin="10">
+                        <TextBlock Text="新規申請許可PCのセットアップ" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
+                        <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
+                                <TextBlock Text="プロキシ設定  " HorizontalAlignment="Left" Background="White"/>
+                            </Grid>
+                            <Grid Height="10"/>
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+                                <TextBlock Text="Windows Update  " Background="White" HorizontalAlignment="Left"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
