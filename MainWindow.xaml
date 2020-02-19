@@ -89,10 +89,11 @@
                                 <TextBlock Text="プロキシ設定  " HorizontalAlignment="Left" Background="White"/>
                             </Grid>
                             <Grid Height="10"/>
-                            <Grid>
+                            <Grid Height="50">
                                 <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
                                 <TextBlock Text="Windows Update  " Background="White" HorizontalAlignment="Left"/>
-                            </Grid>
+								<Button x:Name="GoToSetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToSetting_Click"></Button>
+							</Grid>
                         </StackPanel>
                     </Grid>
                 </TabItem>

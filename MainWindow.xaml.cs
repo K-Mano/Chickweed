@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -220,6 +221,10 @@ namespace ITToolKit_3
                 case 3:
                     break;
             }
+        }
+
+        private void GoToSetting_Click(object sender, RoutedEventArgs e) {
+            Process.Start("ms-settings:windowsupdate");
         }
     }
 }
