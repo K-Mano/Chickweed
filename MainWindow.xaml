@@ -8,8 +8,8 @@
         Title="ITToolKit Portable" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="disp_Loaded" Closing="disp_Closing">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid>
-            <TabControl Margin="10" Grid.Column="0" TabStripPlacement="Top">
-                <TabItem Header="メイン">
+            <TabControl x:Name="MainTabControl" Margin="10" Grid.Column="0" TabStripPlacement="Top">
+                <TabItem x:Name="default" Header="メイン">
                     <Grid Margin="10">
                         <TextBlock Text="寮内インターネットの使用及びPC持込許可に必要な情報の取得" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
                         <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
@@ -80,7 +80,7 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem Header="その他の機能">
+                <TabItem x:Name="others" Header="その他の機能">
                     <Grid Margin="10">
                         <TextBlock Text="新規申請許可PCのセットアップ" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
                         <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
