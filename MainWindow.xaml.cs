@@ -1,36 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace ITToolKit_3
 {
     /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
+    /// プラグインで実装するインターフェイス
     /// </summary>
+    public interface IPlugin
+    {
+        /// <summary>
+        /// プラグインの名前
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// プラグインのバージョン
+        /// </summary>
+        string Version { get; }
+
+        /// <summary>
+        /// プラグインの説明
+        /// </summary>
+        string Description { get; }
+
+        /// <summary>
+        /// プラグインのホスト
+        /// </summary>
+        IPluginHost Host { get; set; }
+
+        /// <summary>
+        /// プラグインを実行する
+        /// </summary>
+        void Run();
+    }
+
+    /// <summary>
+    /// プラグインのホストで実装するインターフェイス
+    /// </summary>
+    public interface IPluginHost
+    {
+        /// <summary>
+        /// ホストのメインフォーム
+        /// </summary>
+        Form MainForm { get; }
+
+        /// <summary>
+        /// ホストのRichTextBoxコントロール
+        /// </summary>
+        System.Windows.Controls.TabControl MainTabControl { get; }
+    }
+
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// MainWindow.xaml の相互作用ロジック
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
         }
-
-        partial void Init();
-
+        /// <summary>
+        /// MainWindowのウィンドウハンドル取得
+        /// </summary>
         public IntPtr Handle
         {
             get
@@ -39,7 +74,9 @@ namespace ITToolKit_3
                 return helper.Handle;
             }
         }
-
+        /// <summary>
+        /// 各クラスの初期化
+        /// </summary>
         SaveWindow saveWindow = new SaveWindow();
 
         NetworkAdapter network = new NetworkAdapter();
@@ -47,6 +84,9 @@ namespace ITToolKit_3
 
         int result = 0;
 
+        /// <summary>
+        /// データの取得処理
+        /// </summary>
         private void Setup()
         {
             int errorcount;
@@ -107,7 +147,7 @@ namespace ITToolKit_3
                         errordialog.Show();
                     }
                 }
-            }while(errorcount!=0);
+            } while (errorcount != 0);
         }
         private void disp_Loaded(object sender, RoutedEventArgs e)
         {
@@ -200,7 +240,7 @@ namespace ITToolKit_3
                 savedialog.Controls.Add(savenew);
 
                 var exit = new TaskDialogCommandLink("exit", "保存せずに終了(&X)");
-                exit.Click += (sender, e) => 
+                exit.Click += (sender, e) =>
                 {
                     result = 3;
                     savedialog.Close();
@@ -224,11 +264,13 @@ namespace ITToolKit_3
                     break;
             }
         }
-        private void GoToProxySetting_Click(object sender, RoutedEventArgs e) {
+        private void GoToProxySetting_Click(object sender, RoutedEventArgs e)
+        {
             Process.Start("ms-settings:network-proxy");
         }
 
-        private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e) {
+        private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e)
+        {
             Process.Start("ms-settings:windowsupdate");
         }
     }

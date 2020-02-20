@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ITToolKit_3
 {
@@ -12,7 +8,7 @@ namespace ITToolKit_3
         /// <summary>
         /// 古い方法
         /// </summary>
-        
+
         public string GetHardwareModelName()
         {
             ManagementScope scope = new ManagementScope("root\\cimv2");
@@ -21,7 +17,7 @@ namespace ITToolKit_3
             ObjectQuery q = new ObjectQuery("select Manufacturer,Model from Win32_ComputerSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, q);
             ManagementObjectCollection collection = searcher.Get();
-            
+
             foreach (ManagementObject o in collection)
                 return Convert.ToString(o.GetPropertyValue("Model"));
             return null;

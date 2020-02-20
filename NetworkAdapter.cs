@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.NetworkInformation;
 
 namespace ITToolKit_3
 {
@@ -15,7 +10,7 @@ namespace ITToolKit_3
             NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
             foreach (NetworkInterface adapter in adapters)
             {
-                if (adapter.NetworkInterfaceType==networktype && adapter.Name.Contains(contain))
+                if (adapter.NetworkInterfaceType == networktype && adapter.Name.Contains(contain))
                 {
                     return adapter;
                 }
