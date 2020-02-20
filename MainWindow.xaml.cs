@@ -29,6 +29,8 @@ namespace ITToolKit_3
             InitializeComponent();
         }
 
+        partial void Init();
+
         public IntPtr Handle
         {
             get
