@@ -224,8 +224,11 @@ namespace ITToolKit_3
                     break;
             }
         }
+        private void GoToProxySetting_Click(object sender, RoutedEventArgs e) {
+            Process.Start("ms-settings:network-proxy");
+        }
 
-        private void GoToSetting_Click(object sender, RoutedEventArgs e) {
+        private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e) {
             Process.Start("ms-settings:windowsupdate");
         }
     }

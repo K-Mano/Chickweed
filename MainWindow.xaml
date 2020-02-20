@@ -24,7 +24,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
-                                    <StackPanel VerticalAlignment="Center" Margin="20,0" HorizontalAlignment="Left">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
                                         <TextBlock x:Name="adaptername" Text="Wi-Fi Adapter" HorizontalAlignment="Center" FontWeight="Bold"/>
                                         <TextBlock x:Name="vendorname" Text="Vendor" HorizontalAlignment="Center"/>
                                     </StackPanel>
@@ -33,7 +33,7 @@
                                     <Separator Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
                                 </StackPanel>
                                 <Grid Grid.Column="2">
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
                                         <TextBox x:Name="phynumber" Text="00:00:00:00:00:00" IsReadOnly="True" HorizontalAlignment="Center" Background="Transparent" FontFamily="Consolas" FontSize="13" BorderBrush="Transparent" TextWrapping="Wrap"/>
                                         <TextBlock Text="(確認: Macアドレスは16進数[0-F])" HorizontalAlignment="Center" FontWeight="Bold"/>
                                     </StackPanel>
@@ -84,15 +84,16 @@
                     <Grid Margin="10">
                         <TextBlock Text="新規申請許可PCのセットアップ" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
                         <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
-                            <Grid>
+                            <Grid Height="50">
                                 <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
                                 <TextBlock Text="プロキシ設定  " HorizontalAlignment="Left" Background="White"/>
+								<Button x:Name="GoToProxySetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToProxySetting_Click"></Button>
                             </Grid>
                             <Grid Height="10"/>
                             <Grid Height="50">
                                 <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
                                 <TextBlock Text="Windows Update  " Background="White" HorizontalAlignment="Left"/>
-								<Button x:Name="GoToSetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToSetting_Click"></Button>
+								<Button x:Name="GoToUpdateSetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToUpdateSetting_Click"></Button>
 							</Grid>
                         </StackPanel>
                     </Grid>
