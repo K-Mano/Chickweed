@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ITToolKit_3"
         mc:Ignorable="d"
-        Title="ITToolKit Portable" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="disp_Loaded" Closing="disp_Closing">
+        Title="ITToolKit Portable" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="disp_Closing">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid>
             <TabControl x:Name="MainTabControl" Margin="10" Grid.Column="0" TabStripPlacement="Top">
@@ -70,9 +70,9 @@
                                     <StackPanel>
                                         <Grid Height="20"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button x:Name="reset" Content="再評価(_R)" Width="90" Click="reset_Click"/>
+                                            <Button x:Name="reset" Content="再評価(_R)" Width="90" Click="Reset_Click"/>
                                             <Grid Width="10"/>
-                                            <Button x:Name="savedialog" Content="評価を保存(_A)" Width="90" Click="save_Click"/>
+                                            <Button x:Name="save" Content="評価を保存(_A)" Width="90" Click="Save_Click"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>

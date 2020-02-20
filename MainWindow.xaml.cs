@@ -3,7 +3,8 @@ using System;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Windows;
-using System.Windows.Forms;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace ITToolKit_3
 {
@@ -38,22 +39,18 @@ namespace ITToolKit_3
         void Run();
     }
 
-    /// <summary>
-    /// プラグインのホストで実装するインターフェイス
-    /// </summary>
     public interface IPluginHost
     {
         /// <summary>
-        /// ホストのメインフォーム
+        /// ホストのメインウィンドウ
         /// </summary>
-        Form MainForm { get; }
+        Window MainWindow { get; }
 
         /// <summary>
-        /// ホストのRichTextBoxコントロール
+        /// ホストのTabControl
         /// </summary>
-        System.Windows.Controls.TabControl MainTabControl { get; }
+        TabControl MainTabControl { get; }
     }
-
     public partial class MainWindow : Window
     {
         /// <summary>
@@ -66,6 +63,7 @@ namespace ITToolKit_3
         /// <summary>
         /// MainWindowのウィンドウハンドル取得
         /// </summary>
+        
         public IntPtr Handle
         {
             get
@@ -74,11 +72,19 @@ namespace ITToolKit_3
                 return helper.Handle;
             }
         }
+
+        public TabControl GetTabControl
+        {
+            get
+            {
+                return MainTabControl;
+            }
+        }
+
         /// <summary>
         /// 各クラスの初期化
         /// </summary>
-        SaveWindow saveWindow = new SaveWindow();
-
+        
         NetworkAdapter network = new NetworkAdapter();
         GetRegistryKeys reg = new GetRegistryKeys();
 
@@ -149,17 +155,33 @@ namespace ITToolKit_3
                 }
             } while (errorcount != 0);
         }
-        private void disp_Loaded(object sender, RoutedEventArgs e)
+        private void InitPlugins()
+        {
+            //インストールされているプラグインを調べる
+            PluginInfo[] pis = PluginInfo.FindPlugins();
+
+            //すべてのプラグインクラスのインスタンスを作成する
+            IPlugin[] plugins = new IPlugin[pis.Length];
+            for (int i = 0; i < plugins.Length; i++) plugins[i] = pis[i].CreateInstance(this);
+
+            for (int number = 0; number < plugins.Length; number++)
+            {
+                //プラグインのRunメソッドを呼び出し
+                plugins[number].Run();
+            }
+        }
+        private void Disp_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitPlugins();
+            Setup();
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
         {
             Setup();
         }
 
-        private void reset_Click(object sender, RoutedEventArgs e)
-        {
-            Setup();
-        }
-
-        private void save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             using (TaskDialog savedialog = new TaskDialog())
             {
@@ -201,10 +223,8 @@ namespace ITToolKit_3
             switch (result)
             {
                 case 0:
-                    saveWindow.ShowDialog();
                     break;
                 case 1:
-                    saveWindow.ShowDialog();
                     break;
                 case 2:
                     break;
@@ -255,12 +275,11 @@ namespace ITToolKit_3
                     e.Cancel = true;
                     break;
                 case 1:
-                    saveWindow.ShowDialog();
                     break;
                 case 2:
-                    saveWindow.ShowDialog();
                     break;
                 case 3:
+                    Application.Current.Shutdown();
                     break;
             }
         }
