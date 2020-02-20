@@ -1,2 +1,28 @@
 # ITToolKit-Portable
- 
+IT管理委員を支援するためのソフトウェアです。
+システム情報などを自動的に取得し、リストに表示します。また、ExcelBook形式(.xlsx)で取得したデータを出力することができます。
+
+# Dependency
+Visual C#
+
+# Requirement:
+Windows 10
+.NET Framework 4.7.2
+
+# Setup
+Extract the archive, and run "ITToolKit Portable.exe" to complete.
+
+# How to Update
+**DO NOT RUN "Updater.exe" DIRECTLY!**
+
+1.Run "ITToolKit.exe" and Click "Update".
+
+2.The update will be started automatically.
+
+# Licence
+This software is released under the Apache 2.0 License, see LICENSE.
+
+# Authors
+K-Mano
+
+Naoki Takahashi
