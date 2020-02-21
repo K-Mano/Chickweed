@@ -1,10 +1,10 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace ITToolKit_3
 {
@@ -283,14 +283,48 @@ namespace ITToolKit_3
                     break;
             }
         }
+
         private void GoToProxySetting_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("ms-settings:network-proxy");
         }
 
-        private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("ms-settings:windowsupdate");
+        private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e) {
+            Process.Start("ms-settings:windowsupdate-action");
+        }
+
+        private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e) {
+            CreateShortcut("プロキシ設定", "ms-settings:network-proxy");
+        }
+
+        private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e) {
+            CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action");
+        }
+
+        public void CreateShortcut(string Name, string linkPath) {
+            //作成するショートカットのパス
+            string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),@Name+".lnk");
+            //ショートカットのリンク先
+            var targetPath = linkPath;
+
+            //WshShellを作成
+            Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
+            dynamic shell = Activator.CreateInstance(t);
+
+            //WshShortcutを作成
+            var shortcut = shell.CreateShortcut(shortcutPath);
+
+            //リンク先
+            shortcut.TargetPath = targetPath;
+            //アイコンのパス
+            shortcut.IconLocation = linkPath + ",1";
+
+            //ショートカットを作成
+            shortcut.Save();
+
+            //後始末
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shortcut);
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
         }
     }
 }

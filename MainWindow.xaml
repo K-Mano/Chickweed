@@ -87,13 +87,21 @@
                             <Grid Height="50">
                                 <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
                                 <TextBlock Text="プロキシ設定  " HorizontalAlignment="Left" Background="White"/>
-								<Button x:Name="GoToProxySetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToProxySetting_Click"></Button>
+								<StackPanel Orientation="Horizontal">
+									<Button x:Name="CreateProxyShortcutToDesktop" Content="ショートカットを作る" ToolTip="デスクトップにプロキシ設定のショートカットを作成します" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="100" Click="CreateProxyShortcutToDesktop_Click"></Button>
+									<Grid Width="10"/>
+									<Button x:Name="GoToProxySetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToProxySetting_Click"></Button>
+								</StackPanel>
                             </Grid>
                             <Grid Height="10"/>
                             <Grid Height="50">
                                 <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
-                                <TextBlock Text="Windows Update  " Background="White" HorizontalAlignment="Left"/>
-								<Button x:Name="GoToUpdateSetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToUpdateSetting_Click"></Button>
+								<TextBlock Text="Windows Update  " Background="White" HorizontalAlignment="Left"/>
+								<StackPanel Orientation="Horizontal">
+									<Button x:Name="CreateUpdateShortcutToDesktop" Content="ショートカットを作る" ToolTip="デスクトップにWindows Update設定のショートカットを作成します" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="100" Click="CreateUpdateShortcutToDesktop_Click"></Button>
+									<Grid Width="10"/>
+									<Button x:Name="GoToUpdateSetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToUpdateSetting_Click"></Button>
+								</StackPanel>
 							</Grid>
                         </StackPanel>
                     </Grid>
