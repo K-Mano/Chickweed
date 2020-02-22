@@ -294,14 +294,14 @@ namespace ITToolKit_3
         }
 
         private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e) {
-            CreateShortcut("プロキシ設定", "ms-settings:network-proxy");
+            CreateShortcut("プロキシ設定", "ms-settings:network-proxy", "C:\\Windows\\System32\\Shell32.dll" + ",316");
         }
 
         private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e) {
-            CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action");
+            CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action", "C:\\Windows\\System32\\Shell32.dll" + ",316");
         }
 
-        public void CreateShortcut(string Name, string linkPath) {
+        public void CreateShortcut(string Name, string linkPath, string iconPath) {
             //作成するショートカットのパス
             string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),@Name+".lnk");
             //ショートカットのリンク先
@@ -317,7 +317,7 @@ namespace ITToolKit_3
             //リンク先
             shortcut.TargetPath = targetPath;
             //アイコンのパス
-            shortcut.IconLocation = linkPath + ",1";
+            shortcut.IconLocation = iconPath;
 
             //ショートカットを作成
             shortcut.Save();
