@@ -64,7 +64,7 @@
                                             <TextBlock x:Name="maker" Text="Maker"/>
                                             <TextBlock x:Name="sysname" Text="Name"/>
                                             <Grid Height="20"/>
-                                            <TextBlock x:Name="evaluation" Text="申請許可" Foreground="Green" FontWeight="Bold"/>
+                                            <TextBlock x:Name="evaluation" Text="Judge" FontWeight="Bold"/>
                                         </StackPanel>
                                     </Grid>
                                     <StackPanel>

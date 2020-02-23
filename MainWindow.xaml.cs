@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ITToolKit_3
 {
@@ -113,6 +114,7 @@ namespace ITToolKit_3
                     windows.Text = reg.GetOSFullName();
                     version.Text = "バージョン " + version_id + " (OSビルド " + major_version + "." + minor_version + ")";
 
+                    evaluation.Text = JudgeVersion(version_id);
                     maker.Text = reg.GetHardwareVendorName();
                     sysname.Text = reg.GetHardwareModelName();
                 }
@@ -289,19 +291,23 @@ namespace ITToolKit_3
             Process.Start("ms-settings:network-proxy");
         }
 
-        private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e) {
+        private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e)
+        {
             Process.Start("ms-settings:windowsupdate-action");
         }
 
-        private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e) {
+        private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e)
+        {
             CreateShortcut("プロキシ設定", "ms-settings:network-proxy", "C:\\Windows\\System32\\Shell32.dll" + ",316");
         }
 
-        private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e) {
+        private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e)
+        {
             CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action", "C:\\Windows\\System32\\Shell32.dll" + ",316");
         }
 
-        public void CreateShortcut(string Name, string linkPath, string iconPath) {
+        public void CreateShortcut(string Name, string linkPath, string iconPath)
+        {
             //作成するショートカットのパス
             string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),@Name+".lnk");
             //ショートカットのリンク先
@@ -325,6 +331,40 @@ namespace ITToolKit_3
             //後始末
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shortcut);
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
+        }
+
+        public string JudgeVersion(string Version_id) 
+        {
+            int Base_year, Year_end, Version_support, Version_year, Version_month;
+
+            // 期限用数値の作成
+            DateTime dateTime = DateTime.Now;
+            Base_year = int.Parse(dateTime.ToString("yy")) + 1;
+            Year_end = int.Parse(Convert.ToString(Base_year) + "03");
+
+            // バージョンの計算
+            Version_year = int.Parse(Version_id.Substring(0, 2));
+            Version_month = int.Parse(Version_id.Substring(3));
+            for (int i = 0; i < 18; i++) {
+                Version_month++;
+                if (Version_month == 12) {
+                    Version_month = 1;
+                    Version_year++;
+                }
+            }
+            Version_support = int.Parse((Convert.ToString(Version_year) + (String.Format("{0:00}", Version_month))));
+
+            // 申請判定
+            if (Year_end < Version_support)
+            {
+                evaluation.Foreground = new SolidColorBrush(Colors.Green);
+                return "申請許可";
+            }
+            else
+            {
+                evaluation.Foreground = new SolidColorBrush(Colors.Red);
+                return "申請不可";
+            }
         }
     }
 }
