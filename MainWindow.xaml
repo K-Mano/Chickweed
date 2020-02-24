@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ITToolKit_3"
         mc:Ignorable="d"
-        Title="ITToolKit Portable" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="disp_Closing">
+        Title="ITToolKit™" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="disp_Closing">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid>
             <TabControl x:Name="MainTabControl" Margin="10" Grid.Column="0" TabStripPlacement="Top">
