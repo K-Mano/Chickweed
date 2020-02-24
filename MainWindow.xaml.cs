@@ -302,7 +302,7 @@ namespace ITToolKit_3
             }
             else
             {
-                Process.Start("control.exe", "/name Microsoft.InternetOptions /page 4");
+                Process.Start("control.exe", "inetcpl.cpl,,4");
             }
         }
 
@@ -328,7 +328,7 @@ namespace ITToolKit_3
             }
             else
             {
-                CreateShortcut("プロキシ設定", "C:\\Windows\\System32\\control.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4", "C:\\WINDOW\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+                CreateShortcut("プロキシ設定", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
         }
 
@@ -341,7 +341,7 @@ namespace ITToolKit_3
             }
             else
             {
-                CreateShortcut("Widnows Update", "C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOW\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+                CreateShortcut("Widnows Update", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
         }
 
@@ -359,6 +359,8 @@ namespace ITToolKit_3
 
             // リンク先
             shortcut.TargetPath = linkPath;
+            shortcut.TargetPath.Trim('"');
+
             // ワーキングディレクトリ
             if (workingPath != "0")
             {
@@ -412,7 +414,7 @@ namespace ITToolKit_3
         public string JudgeWindows10(string winver) 
         {
             string[] winver_splitted = winver.Split(' ');
-            return "8"; // winver_splitted[2];
+            return "8"; //winver_splitted[2];
         }
     }
 }
