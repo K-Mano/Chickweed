@@ -61,10 +61,10 @@ namespace ITToolKit_3
         {
             InitializeComponent();
         }
+
         /// <summary>
         /// MainWindowのウィンドウハンドル取得
         /// </summary>
-        
         public IntPtr Handle
         {
             get
@@ -102,12 +102,12 @@ namespace ITToolKit_3
                 errorcount = 0;
                 try
                 {
-                    /* NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
+                    NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
                     adaptername.Text = network.GetAdapterName(adapter);
-                    vendorname.Text = network.GetAdapterVendor(adapter);
-                    phynumber.Text = network.GetMacAddressFromAdapter(adapter); */
+                    vendorname.Text  = network.GetAdapterVendor(adapter);
+                    phynumber.Text   = network.GetMacAddressFromAdapter(adapter);
 
-                    string version_id = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
+                    string version_id    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
                     string major_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
                     string minor_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "UBR", "").ToString();
 
@@ -136,11 +136,11 @@ namespace ITToolKit_3
                     {
                         result = 0;
 
-                        errordialog.Caption = "ITToolKit";
-                        errordialog.InstructionText = "一部の情報を取得できませんでした";
-                        errordialog.Text = "評価に必要な情報が不足しています。タスクを選択してください。";
-                        errordialog.Icon = TaskDialogStandardIcon.Error;
-                        errordialog.OwnerWindowHandle = Handle;
+                        errordialog.Caption             = "ITToolKit™";
+                        errordialog.InstructionText     = "一部の情報を取得できませんでした";
+                        errordialog.Text                = "評価に必要な情報が不足しています。タスクを選択してください。";
+                        errordialog.Icon                = TaskDialogStandardIcon.Error;
+                        errordialog.OwnerWindowHandle   = Handle;
 
                         var retry = new TaskDialogCommandLink("retry", "再度評価を実施する(&R)\n一時的な問題はこれらによって解決する可能性があります。");
                         retry.Default = true;
@@ -151,7 +151,7 @@ namespace ITToolKit_3
                         };
                         errordialog.Controls.Add(retry);
 
-                        var cancel = new TaskDialogCommandLink("cancel", "評価を終了する(&C)");
+                        var cancel = new TaskDialogCommandLink("cancel", "評価を終了する(&X)");
                         cancel.Click += (sender, e) =>
                         {
                             result = 1;
@@ -196,10 +196,10 @@ namespace ITToolKit_3
             {
                 result = 0;
 
-                savedialog.Caption = "ITToolKit";
-                savedialog.InstructionText = "評価の結果に対するタスクを選択してください。";
-                savedialog.Cancelable = true;
-                savedialog.OwnerWindowHandle = Handle;
+                savedialog.Caption              = "ITToolKit™";
+                savedialog.InstructionText      = "評価の結果に対するタスクを選択してください。";
+                savedialog.Cancelable           = true;
+                savedialog.OwnerWindowHandle    = Handle;
 
                 var savenormal = new TaskDialogCommandLink("savenormal", "既定のファイルに保存(&E)\n既定のファイルに追記します。通常はこれを選択してください。");
                 savenormal.Default = true;
@@ -245,10 +245,10 @@ namespace ITToolKit_3
             {
                 result = 0;
 
-                savedialog.Caption = "ITToolKit";
-                savedialog.InstructionText = "評価の結果に対するタスクを選択してください。";
-                savedialog.Cancelable = true;
-                savedialog.OwnerWindowHandle = Handle;
+                savedialog.Caption              = "ITToolKit™";
+                savedialog.InstructionText      = "評価の結果に対するタスクを選択してください。";
+                savedialog.Cancelable           = true;
+                savedialog.OwnerWindowHandle    = Handle;
 
                 var savenormal = new TaskDialogCommandLink("savenormal", "既定のファイルに保存(&E)\n既定のファイルに追記します。通常はこれを選択してください。");
                 savenormal.Default = true;
@@ -394,7 +394,7 @@ namespace ITToolKit_3
                     Version_year++;
                 }
             }
-            Version_support = int.Parse((Convert.ToString(Version_year) + (String.Format("{0:00}", Version_month))));
+            Version_support = int.Parse(Convert.ToString(Version_year) + string.Format("{0:00}", Version_month));
 
             // 申請判定
             if (Year_end < Version_support)
