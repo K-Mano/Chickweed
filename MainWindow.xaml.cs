@@ -102,10 +102,10 @@ namespace ITToolKit_3
                 errorcount = 0;
                 try
                 {
-                    NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
+                    /* NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
                     adaptername.Text = network.GetAdapterName(adapter);
                     vendorname.Text = network.GetAdapterVendor(adapter);
-                    phynumber.Text = network.GetMacAddressFromAdapter(adapter);
+                    phynumber.Text = network.GetMacAddressFromAdapter(adapter); */
 
                     string version_id = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
                     string major_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
@@ -295,47 +295,82 @@ namespace ITToolKit_3
 
         private void GoToProxySetting_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("ms-settings:network-proxy");
+            string winver = JudgeWindows10(reg.GetOSFullName());
+            if (winver == "10") 
+            {
+                Process.Start("ms-settings:network-proxy");
+            }
+            else
+            {
+                Process.Start("control.exe", "/name Microsoft.InternetOptions /page 4");
+            }
         }
 
         private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("ms-settings:windowsupdate-action");
+            string winver = JudgeWindows10(reg.GetOSFullName());
+            if (winver == "10")
+            {
+                Process.Start("ms-settings:windowsupdate-action");
+            }
+            else
+            {
+                Process.Start("control.exe", "wuaucpl.cpl");
+            }
         }
 
         private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e)
         {
-            CreateShortcut("プロキシ設定", "ms-settings:network-proxy", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+            string winver = JudgeWindows10(reg.GetOSFullName());
+            if (winver == "10")
+            {
+                CreateShortcut("プロキシ設定", "ms-settings:network-proxy", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+            }
+            else
+            {
+                CreateShortcut("プロキシ設定", "C:\\Windows\\System32\\control.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4", "C:\\WINDOW\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+            }
         }
 
         private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e)
         {
-            CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+            string winver = JudgeWindows10(reg.GetOSFullName());
+            if (winver == "10")
+            {
+                CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+            }
+            else
+            {
+                CreateShortcut("Widnows Update", "C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOW\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+            }
         }
 
-        public void CreateShortcut(string Name, string linkPath, string iconPath)
+        public void CreateShortcut(string Name, string linkPath, string workingPath, string iconPath)
         {
-            //作成するショートカットのパス
+            // 作成するショートカットのパス
             string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),@Name+".lnk");
-            //ショートカットのリンク先
-            var targetPath = linkPath;
 
-            //WshShellを作成
+            // WshShellを作成
             Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
             dynamic shell = Activator.CreateInstance(t);
 
-            //WshShortcutを作成
+            // WshShortcutを作成
             var shortcut = shell.CreateShortcut(shortcutPath);
 
-            //リンク先
-            shortcut.TargetPath = targetPath;
-            //アイコンのパス
+            // リンク先
+            shortcut.TargetPath = linkPath;
+            // ワーキングディレクトリ
+            if (workingPath != "0")
+            {
+                shortcut.WorkingDirectory = workingPath;
+            }
+            // アイコンのパス
             shortcut.IconLocation = iconPath;
 
-            //ショートカットを作成
+            // ショートカットを作成
             shortcut.Save();
 
-            //後始末
+            // 後始末
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shortcut);
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
         }
@@ -377,7 +412,7 @@ namespace ITToolKit_3
         public string JudgeWindows10(string winver) 
         {
             string[] winver_splitted = winver.Split(' ');
-            return "8";// winver_splitted[2];
+            return "8"; // winver_splitted[2];
         }
     }
 }
