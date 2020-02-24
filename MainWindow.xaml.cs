@@ -114,9 +114,16 @@ namespace ITToolKit_3
                     windows.Text = reg.GetOSFullName();
                     version.Text = "バージョン " + version_id + " (OSビルド " + major_version + "." + minor_version + ")";
 
-                    evaluation.Text = JudgeVersion(version_id);
-                    maker.Text      = reg.GetHardwareVendorName();
-                    sysname.Text    = reg.GetHardwareModelName();
+                    if (JudgeWindows10(reg.GetOSFullName()) == "10")
+                    {
+                        evaluation.Text = JudgeVersion(version_id);
+                    }
+                    else {
+                        evaluation.Foreground = new SolidColorBrush(Colors.Red);
+                        evaluation.Text = "IT管理委員は資料を見て評価してください";
+                    }
+                    maker.Text = reg.GetHardwareVendorName();
+                    sysname.Text = reg.GetHardwareModelName();
                 }
                 catch (Exception)
                 {
@@ -363,8 +370,14 @@ namespace ITToolKit_3
             else
             {
                 evaluation.Foreground = new SolidColorBrush(Colors.Red);
-                return "申請不可";
+                return "申請不可(Windows Updateが必要です)";
             }
+        }
+
+        public string JudgeWindows10(string winver) 
+        {
+            string[] winver_splitted = winver.Split(' ');
+            return "8";// winver_splitted[2];
         }
     }
 }
