@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ITToolKit_3"
         mc:Ignorable="d"
-        Title="ITToolKit™" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="disp_Closing">
+        Title="ITToolKit™" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="Disp_Closing">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid>
             <TabControl x:Name="MainTabControl" Margin="10" Grid.Column="0" TabStripPlacement="Top">
@@ -73,9 +73,43 @@
                                             <Button x:Name="reset" Content="再評価(_R)" Width="90" Click="Reset_Click"/>
                                             <Grid Width="10"/>
                                             <Button x:Name="save" Content="評価を保存(_A)" Width="90" Click="Save_Click"/>
+                                            <Grid Width="10"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="details" Header="評価の詳細">
+                    <Grid Margin="10">
+                        <TextBlock Text="評価結果の詳細" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
+                        <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
+                                <TextBlock Text="サポート期間  " HorizontalAlignment="Left" Background="White"/>
+                            </Grid>
+                            <Grid>
+                                <Grid Margin="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="システムのリリースID: "/>
+                                        <TextBlock Text="メインストリーム サポート期間: "/>
+                                        <TextBlock Text="寮内インターネット/PC申請有効期限: "/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock x:Name="releaseid" Text="0000"/>
+                                        <TextBlock x:Name="support" Text="20XX年 X月31日まで"/>
+                                        <TextBlock x:Name="active" Text="20XX年 3月31日まで"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+                                <TextBlock Text="チェックリスト  " Background="White" HorizontalAlignment="Left"/>
                             </Grid>
                         </StackPanel>
                     </Grid>

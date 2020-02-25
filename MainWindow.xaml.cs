@@ -82,12 +82,21 @@ namespace ITToolKit_3
             }
         }
 
+        public struct SupportData
+        {
+            public bool IsSupportAvailable;
+            public string EvaluationText;
+            public DateTime WExpireDate;
+            public DateTime DExpireDate;
+        }
+
         /// <summary>
         /// 各クラスの初期化
         /// </summary>
         
         NetworkAdapter network = new NetworkAdapter();
         GetRegistryKeys reg = new GetRegistryKeys();
+        Utilities util = new Utilities();
 
         int result = 0;
 
@@ -97,32 +106,41 @@ namespace ITToolKit_3
         private void Setup()
         {
             int errorcount;
+            DateTime dateTime = DateTime.Now;
+            
             do
             {
                 errorcount = 0;
                 try
                 {
                     NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
+
                     adaptername.Text = network.GetAdapterName(adapter);
                     vendorname.Text  = network.GetAdapterVendor(adapter);
                     phynumber.Text   = network.GetMacAddressFromAdapter(adapter);
 
-                    string version_id    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
+                    string release_id    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
                     string major_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
                     string minor_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "UBR", "").ToString();
 
                     windows.Text = reg.GetOSFullName();
-                    version.Text = "バージョン " + version_id + " (OSビルド " + major_version + "." + minor_version + ")";
+                    version.Text = "バージョン " + release_id + " (OSビルド " + major_version + "." + minor_version + ")";
 
-                    if (JudgeWindows10(reg.GetOSFullName()) == "10")
+                    releaseid.Text = release_id;
+
+                    SupportData data = JudgeVersion(release_id, dateTime);
+                    support.Text = data.WExpireDate.ToString("yyyy年MM月dd日まで");
+                    active.Text  = data.DExpireDate.ToString("yyyy年MM月31日まで");
+
+                    if (JudgeWindowsVersion(reg.GetOSFullName()) == "10")
                     {
-                        evaluation.Text = JudgeVersion(version_id);
+                        evaluation.Text = data.EvaluationText;
                     }
                     else {
                         evaluation.Foreground = new SolidColorBrush(Colors.Red);
                         evaluation.Text = "IT管理委員は資料を見て評価してください";
                     }
-                    maker.Text = reg.GetHardwareVendorName();
+                    maker.Text   = reg.GetHardwareVendorName();
                     sysname.Text = reg.GetHardwareModelName();
                 }
                 catch (Exception)
@@ -136,7 +154,7 @@ namespace ITToolKit_3
                     {
                         result = 0;
 
-                        errordialog.Caption             = "ITToolKit™";
+                        errordialog.Caption             = "ITToolKit™ 評価システム";
                         errordialog.InstructionText     = "一部の情報を取得できませんでした";
                         errordialog.Text                = "評価に必要な情報が不足しています。タスクを選択してください。";
                         errordialog.Icon                = TaskDialogStandardIcon.Error;
@@ -160,6 +178,14 @@ namespace ITToolKit_3
                         errordialog.Controls.Add(cancel);
 
                         errordialog.Show();
+                    }
+                    switch (result)
+                    {
+                        case 0:
+                            continue;
+                        case 1:
+                            errorcount = 0;
+                            break;
                     }
                 }
             } while (errorcount != 0);
@@ -239,7 +265,7 @@ namespace ITToolKit_3
                     break;
             }
         }
-        private void disp_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Disp_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             using (TaskDialog savedialog = new TaskDialog())
             {
@@ -295,7 +321,7 @@ namespace ITToolKit_3
 
         private void GoToProxySetting_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10") 
             {
                 Process.Start("ms-settings:network-proxy");
@@ -310,7 +336,7 @@ namespace ITToolKit_3
 
         private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10")
             {
                 Process.Start("ms-settings:windowsupdate-action");
@@ -325,7 +351,7 @@ namespace ITToolKit_3
 
         private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10")
             {
                 CreateShortcut("プロキシ設定", "ms-settings:network-proxy", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
@@ -340,15 +366,15 @@ namespace ITToolKit_3
 
         private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10")
             {
-                CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+                CreateShortcut("Windows Update", "ms-settings:windowsupdate-action", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
             /* 
             else
             {
-                CreateShortcut("Widnows Update", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+                CreateShortcut("Windows Update", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
             */
         }
@@ -384,10 +410,68 @@ namespace ITToolKit_3
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
         }
 
-        public string JudgeVersion(string Version_id) 
+        public SupportData JudgeVersion(string id, DateTime date) 
         {
-            int Base_year, Year_end, Version_support, Version_year, Version_month;
+            SupportData support = new SupportData();
+            //サポート期間の定数
+            const int supportPeriod  = 18;
+            //チェックするタイミング
+            DateTime checkSpan = new DateTime(date.Year,4,1,0,0,0);
 
+            //VersionIDから取得したリリース年月
+            int idYear      = int.Parse(util.SubstringAtCount(id, 2)[0]);
+            int idMonth     = int.Parse(util.SubstringAtCount(id, 2)[1]);
+
+            //そのバージョンのサポート期間の計算
+            int yearExpire  = util.DateCount(idYear, idMonth, 0, supportPeriod)[0];
+            int monthExpire = util.DateCount(idYear, idMonth, 0, supportPeriod)[1];
+
+            //DateTime型に変換したサポート期間
+            DateTime expire = DateTime.Parse(string.Format("20{0:00}/{1}/31", yearExpire, monthExpire));
+
+            //年度換算
+            DateTime checkpoint = new DateTime();
+            switch (date.CompareTo(checkSpan))
+            {
+                case -1:
+                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
+                    break;
+                case 0:
+                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
+                    break;
+                case 1:
+                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
+                    checkpoint.AddYears(1);
+                    break;
+            }
+
+            //年度末までサポートがあるか確認
+            switch (checkpoint.CompareTo(expire))
+            {
+                case -1:
+                    evaluation.Foreground = new SolidColorBrush(Colors.Green);
+                    support.IsSupportAvailable = true;
+                    support.EvaluationText = "申請許可";
+                    break;
+                case 0:
+                    evaluation.Foreground = new SolidColorBrush(Colors.Red);
+                    support.IsSupportAvailable = false;
+                    support.EvaluationText = "申請不可(アップデートが必要です)";
+                    break;
+                case 1:
+                    evaluation.Foreground = new SolidColorBrush(Colors.Red);
+                    support.IsSupportAvailable = false;
+                    support.EvaluationText = "申請不可(アップデートが必要です)";
+                    break;
+            }
+
+            support.DExpireDate = checkpoint;
+            support.WExpireDate = expire;
+
+            return support;
+
+            /*
+            int Base_year, Year_end, Version_support, Version_year, Version_month;
             // 期限用数値の作成
             DateTime dateTime = DateTime.Now;
             Base_year = int.Parse(dateTime.ToString("yy")) + 1;
@@ -404,7 +488,7 @@ namespace ITToolKit_3
                 }
             }
             Version_support = int.Parse(Convert.ToString(Version_year) + string.Format("{0:00}", Version_month));
-
+            
             // 申請判定
             if (Year_end < Version_support)
             {
@@ -415,13 +499,25 @@ namespace ITToolKit_3
             {
                 evaluation.Foreground = new SolidColorBrush(Colors.Red);
                 return "申請不可(Windows Updateが必要です)";
-            }
+            }*/
         }
 
-        public string JudgeWindows10(string winver) 
+        public string JudgeWindowsVersion(string winver) 
         {
-            string[] winver_splitted = winver.Split(' ');
-            return winver_splitted[2];
+            if (winver.Contains("10"))
+            {
+                return "10";
+            }
+            else if(winver.Contains("8"))
+            {
+                return "8";
+            }
+            else
+            {
+                return null;
+            }
+            //string[] winver_splitted = winver.Split(' ');
+            //return "8"; //winver_splitted[2];
         }
     }
 }

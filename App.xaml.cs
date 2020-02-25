@@ -8,5 +8,6 @@ namespace ITToolKit_3
     /// </summary>
     public partial class App : Application
     {
+
     }
 }
