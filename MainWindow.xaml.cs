@@ -326,10 +326,12 @@ namespace ITToolKit_3
             {
                 Process.Start("ms-settings:network-proxy");
             }
+            /* Windows 8.1 以下だった場合の処理
             else
             {
                 Process.Start("control.exe", "inetcpl.cpl,,4");
             }
+            */
         }
 
         private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e)
@@ -339,10 +341,12 @@ namespace ITToolKit_3
             {
                 Process.Start("ms-settings:windowsupdate-action");
             }
+            /*
             else
             {
                 Process.Start("control.exe", "wuaucpl.cpl");
             }
+            */
         }
 
         private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e)
@@ -352,10 +356,12 @@ namespace ITToolKit_3
             {
                 CreateShortcut("プロキシ設定", "ms-settings:network-proxy", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
+            /* 謎のダブルクォーテーションが入るlinkPath
             else
             {
                 CreateShortcut("プロキシ設定", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
+            */
         }
 
         private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e)
@@ -365,10 +371,12 @@ namespace ITToolKit_3
             {
                 CreateShortcut("Windows Update", "ms-settings:windowsupdate-action", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
+            /* 
             else
             {
                 CreateShortcut("Windows Update", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
+            */
         }
 
         public void CreateShortcut(string Name, string linkPath, string workingPath, string iconPath)
@@ -385,7 +393,6 @@ namespace ITToolKit_3
 
             // リンク先
             shortcut.TargetPath = linkPath;
-            shortcut.TargetPath.Trim('"');
 
             // ワーキングディレクトリ
             if (workingPath != "0")
