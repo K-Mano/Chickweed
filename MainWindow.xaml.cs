@@ -88,6 +88,7 @@ namespace ITToolKit_3
         
         NetworkAdapter network = new NetworkAdapter();
         GetRegistryKeys reg = new GetRegistryKeys();
+        Utilities util = new Utilities();
 
         int result = 0;
 
@@ -97,12 +98,14 @@ namespace ITToolKit_3
         private void Setup()
         {
             int errorcount;
+            DateTime dateTime = DateTime.Now;
             do
             {
                 errorcount = 0;
                 try
                 {
                     NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
+
                     adaptername.Text = network.GetAdapterName(adapter);
                     vendorname.Text  = network.GetAdapterVendor(adapter);
                     phynumber.Text   = network.GetMacAddressFromAdapter(adapter);
@@ -116,7 +119,7 @@ namespace ITToolKit_3
 
                     if (JudgeWindowsVersion(reg.GetOSFullName()) == "10")
                     {
-                        evaluation.Text = JudgeVersion(version_id);
+                        evaluation.Text = JudgeVersion(version_id, dateTime);
                     }
                     else {
                         evaluation.Foreground = new SolidColorBrush(Colors.Red);
@@ -377,10 +380,53 @@ namespace ITToolKit_3
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
         }
 
-        public string JudgeVersion(string Version_id) 
+        public string JudgeVersion(string id, DateTime date) 
         {
-            int Base_year, Year_end, Version_support, Version_year, Version_month;
+            const int supportPeriod  = 18;
+            DateTime checkSpan = new DateTime(date.Year,4,1,0,0,0);
 
+            int idYear      = int.Parse(util.SubstringAtCount(id, 2)[0]);
+            int idMonth     = int.Parse(util.SubstringAtCount(id, 2)[1]);
+
+            int yearExpire  = util.DateCount(idYear, idMonth, 0, supportPeriod)[0];
+            int monthExpire = util.DateCount(idYear, idMonth, 0, supportPeriod)[1];
+
+            DateTime expire = DateTime.Parse(string.Format("20{0:00}/{1}/31", yearExpire, monthExpire));
+
+            DateTime checkpoint = new DateTime();
+            switch (date.CompareTo(checkSpan))
+            {
+                case -1:
+                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
+                    break;
+                case 0:
+                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
+                    checkpoint.AddYears(1);
+                    break;
+                case 1:
+                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
+                    checkpoint.AddYears(1);
+                    break;
+            }
+
+            switch (checkpoint.CompareTo(expire))
+            {
+                case -1:
+                    evaluation.Foreground = new SolidColorBrush(Colors.Green);
+                    return "申請許可";
+                case 0:
+                    evaluation.Foreground = new SolidColorBrush(Colors.Red);
+                    return "申請不可(Windows Updateが必要です)";
+                case 1:
+                    evaluation.Foreground = new SolidColorBrush(Colors.Red);
+                    return "申請不可(Windows Updateが必要です)";
+
+            }
+
+            return null;
+
+            /*
+            int Base_year, Year_end, Version_support, Version_year, Version_month;
             // 期限用数値の作成
             DateTime dateTime = DateTime.Now;
             Base_year = int.Parse(dateTime.ToString("yy")) + 1;
@@ -397,7 +443,7 @@ namespace ITToolKit_3
                 }
             }
             Version_support = int.Parse(Convert.ToString(Version_year) + string.Format("{0:00}", Version_month));
-
+            
             // 申請判定
             if (Year_end < Version_support)
             {
@@ -408,7 +454,7 @@ namespace ITToolKit_3
             {
                 evaluation.Foreground = new SolidColorBrush(Colors.Red);
                 return "申請不可(Windows Updateが必要です)";
-            }
+            }*/
         }
 
         public string JudgeWindowsVersion(string winver) 
