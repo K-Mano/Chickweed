@@ -111,6 +111,18 @@
                                 <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
                                 <TextBlock Text="チェックリスト  " Background="White" HorizontalAlignment="Left"/>
                             </Grid>
+                            <Grid>
+                                <StackPanel Margin="20">
+                                    <CheckBox Content="セキュリティ対策ソフトは導入されていますか?"/>
+                                    <TextBlock Text="       導入されていない/ライセンス切れの場合は学校から支給されているESET Endpoint Antivirusを導入してください。"/>
+                                    <Grid Height="10"/>
+                                    <CheckBox Content="ウイルススキャンは実行しましたか?"/>
+                                    <TextBlock Text="       スキャンを実行して潜在的なマルウェアが検出されないことを確認してください。"/>
+                                    <Grid Height="10"/>
+                                    <CheckBox Content="その他気になる点などはありませんか?"/>
+                                    <TextBlock Text="       何かあったら必ずIT管理委員のSlackにて報告してください。"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </Grid>
                 </TabItem>
