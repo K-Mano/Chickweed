@@ -73,6 +73,8 @@
                                             <Button x:Name="reset" Content="再評価(_R)" Width="90" Click="Reset_Click"/>
                                             <Grid Width="10"/>
                                             <Button x:Name="save" Content="評価を保存(_A)" Width="90" Click="Save_Click"/>
+                                            <Grid Width="10"/>
+                                            <Button x:Name="detail" Content="評価の詳細(_D)" Width="90"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>

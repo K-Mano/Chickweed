@@ -114,7 +114,7 @@ namespace ITToolKit_3
                     windows.Text = reg.GetOSFullName();
                     version.Text = "バージョン " + version_id + " (OSビルド " + major_version + "." + minor_version + ")";
 
-                    if (JudgeWindows10(reg.GetOSFullName()) == "10")
+                    if (JudgeWindowsVersion(reg.GetOSFullName()) == "10")
                     {
                         evaluation.Text = JudgeVersion(version_id);
                     }
@@ -295,7 +295,7 @@ namespace ITToolKit_3
 
         private void GoToProxySetting_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10") 
             {
                 Process.Start("ms-settings:network-proxy");
@@ -308,7 +308,7 @@ namespace ITToolKit_3
 
         private void GoToUpdateSetting_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10")
             {
                 Process.Start("ms-settings:windowsupdate-action");
@@ -321,7 +321,7 @@ namespace ITToolKit_3
 
         private void CreateProxyShortcutToDesktop_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10")
             {
                 CreateShortcut("プロキシ設定", "ms-settings:network-proxy", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
@@ -334,14 +334,14 @@ namespace ITToolKit_3
 
         private void CreateUpdateShortcutToDesktop_Click(object sender, RoutedEventArgs e)
         {
-            string winver = JudgeWindows10(reg.GetOSFullName());
+            string winver = JudgeWindowsVersion(reg.GetOSFullName());
             if (winver == "10")
             {
-                CreateShortcut("Widnows Update", "ms-settings:windowsupdate-action", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+                CreateShortcut("Windows Update", "ms-settings:windowsupdate-action", "0", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
             else
             {
-                CreateShortcut("Widnows Update", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
+                CreateShortcut("Windows Update", @"C:\\Windows\\System32\\rundll32.exe shell32.dll,Control_RunDLL /name Microsoft.WindowsUpdate", "C:\\WINDOWS\\system32", "C:\\Windows\\System32\\Shell32.dll" + ",316");
             }
         }
 
@@ -411,10 +411,22 @@ namespace ITToolKit_3
             }
         }
 
-        public string JudgeWindows10(string winver) 
+        public string JudgeWindowsVersion(string winver) 
         {
-            string[] winver_splitted = winver.Split(' ');
-            return "8"; //winver_splitted[2];
+            if (winver.Contains("10"))
+            {
+                return "10";
+            }
+            else if(winver.Contains("8"))
+            {
+                return "8";
+            }
+            else
+            {
+                return null;
+            }
+            //string[] winver_splitted = winver.Split(' ');
+            //return "8"; //winver_splitted[2];
         }
     }
 }
