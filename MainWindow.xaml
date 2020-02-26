@@ -81,7 +81,7 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="details" Header="評価の詳細">
+                <TabItem x:Name="details" Header="詳細">
                     <Grid Margin="10">
                         <TextBlock Text="評価結果の詳細" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
                         <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
@@ -126,7 +126,58 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="others" Header="その他の機能">
+                <TabItem x:Name="settings" Header="設定">
+                    <Grid Margin="10">
+                        <TextBlock Text="設定" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
+                        <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
+                                <TextBlock Text="既定の動作  " HorizontalAlignment="Left" Background="White"/>
+                            </Grid>
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+                                <TextBlock Text="バージョン情報  " Background="White" HorizontalAlignment="Left"/>
+                            </Grid>
+                            <Grid>
+                                <StackPanel Margin="20">
+                                    <Viewbox HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="260">
+                                        <Canvas Height="24" Width="24">
+                                            <Path Fill="Black" Data="M 5.9337501 19.841497 V 2.0614977 H 2.6063502 V 19.841497 Z"/>
+                                            <Path Fill="Black" Data="m 14.470928 19.841497 h 3.3528 V 5.1094976 h 5.6388 V 2.0614977 c -5.1562 0 -9.4996 0 -14.6303996 0 v 3.0479999 h 5.6387996 z"/>
+                                            <Path Fill="Black" Data="m 30.097881 19.841497 h 3.3528 V 5.1094976 h 5.6388 V 2.0614977 c -5.1562 0 -9.4996 0 -14.6304 0 v 3.0479999 h 5.6388 z"/>
+                                            <Path Fill="Black" Data="m 43.368586 7.0652976 c -3.9878 0 -6.477 2.9464004 -6.477 6.5278004 0 3.606799 2.4384 6.527799 6.5024 6.527799 4.064 0 6.5278 -2.921 6.5278 -6.527799 0 -3.5814 -2.5654 -6.5278004 -6.5532 -6.5278004 z m 0.0254 2.8194 c 2.0828 0 3.4036 1.8288004 3.4036 3.7084004 0 1.904999 -1.143 3.682999 -3.4036 3.682999 -2.2606 0 -3.4036 -1.778 -3.4036 -3.682999 0 -1.8796 1.1684 -3.7084004 3.4036 -3.7084004 z"/>
+                                            <Path Fill="Black" Data="m 57.953745 7.0652976 c -3.9878 0 -6.477 2.9464004 -6.477 6.5278004 0 3.606799 2.4384 6.527799 6.5024 6.527799 4.064 0 6.5278 -2.921 6.5278 -6.527799 0 -3.5814 -2.5654 -6.5278004 -6.5532 -6.5278004 z m 0.0254 2.8194 c 2.0828 0 3.4036 1.8288004 3.4036 3.7084004 0 1.904999 -1.143 3.682999 -3.4036 3.682999 -2.2606 0 -3.4036 -1.778 -3.4036 -3.682999 0 -1.8796 1.1684 -3.7084004 3.4036 -3.7084004 z"/>
+                                            <Path Fill="Black" Data="M 66.646097 2.0868977 V 19.841497 h 3.0734 V 2.0868977 Z"/>
+                                            <Path Fill="Black" Data="m 86.953795 2.0614977 h -4.1656 l -6.7564 7.5183999 V 2.0614977 H 72.678996 V 19.841497 h 3.352799 v -7.873999 l 7.4422 7.873999 h 4.1402 v -0.2032 l -8.5598 -8.966199 7.8994 -8.5090003 z"/>
+                                            <Path Fill="Black" Data="M 92.168336 7.2684976 V 19.841497 h -3.0988 V 7.2684976 Z m -3.3782 -3.4797999 c 0 2.4129999 3.6576 2.4129999 3.6576 0 0 -2.413 -3.6576 -2.413 -3.6576 0 z"/>
+                                            <Path Fill="Black" Data="m 96.243055 4.1188977 v 3.2257999 h -2.3368 v 2.6670004 h 2.3368 v 5.410199 c 0 3.1242 1.778 4.6736 4.495795 4.572 0.9398 -0.0254 1.6764 -0.1778 2.5654 -0.5334 l -0.8636 -2.6416 c -0.4572 0.2286 -1.016 0.381 -1.4986 0.381 -0.965195 0 -1.625595 -0.5842 -1.625595 -1.778 v -5.410199 h 3.479795 V 7.3446976 H 99.341855 V 3.7886977 Z"/>
+                                            <Path Fill="Black" Data="m 109.23356 4.0680977 h 2.4384 v -2.032 h -7.2644 v 2.032 h 2.413 v 5.3847999 h 2.413 z m 5.7912 -2.0574 h -2.54 v 7.4421999 h 2.4638 v -2.2098 l -0.1778 -2.159 1.9812 2.7178 h 0.508 l 2.032 -2.7178 -0.1778 2.159 v 2.2098 h 2.4638 V 2.0106977 h -2.54 l -2.0066 2.4638 z"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <Grid Height="5"/>
+                                    <TextBlock x:Name="appversion" Text="バージョン"/>
+                                    <Grid Height="5"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="クレジット: "/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="K-Mano"/>
+                                            <TextBlock Text="Naoki Takahashi"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+                <TabItem x:Name="others" Header="その他の機能" Visibility="Visible">
                     <Grid Margin="10">
                         <TextBlock Text="新規申請許可PCのセットアップ" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
                         <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">

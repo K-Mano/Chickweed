@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ITToolKit_3"
         mc:Ignorable="d"
-        Title="SaveWindow" Height="400" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="SaveDialog_Closing">
+        Title="ITToolKit™ - 評価を保存" Height="400" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="SaveDialog_Closing" FontFamily="Yu Gothic UI">
     <Grid>
-        
+        <StackPanel Margin="10">
+            <GroupBox Header="学籍情報" >
+                <StackPanel Margin="5" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="*学籍番号:" Grid.Column="0" VerticalAlignment="Center"/>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="foreigntext" Text="foreign " Grid.Column="0" Visibility="Collapsed"/>
+                            <TextBox HorizontalAlignment="Stretch" Grid.Column="1"/>
+                        </Grid>
+                        <CheckBox x:Name="foreign" Content="短期留学生" VerticalAlignment="Center" Margin="5,0" Grid.Column="2" Checked="foreign_Checked" Unchecked="foreign_Unchecked"/>
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="*氏名:" Grid.Column="0" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
     </Grid>
 </Window>

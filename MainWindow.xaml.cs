@@ -113,6 +113,8 @@ namespace ITToolKit_3
                 errorcount = 0;
                 try
                 {
+                    appversion.Text = "バージョン "+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
                     NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
 
                     adaptername.Text = network.GetAdapterName(adapter);
@@ -258,8 +260,12 @@ namespace ITToolKit_3
             switch (result)
             {
                 case 0:
+                    SaveWindow saveNormal = new SaveWindow("評価を保存",SaveMode.SAVE);
+                    saveNormal.ShowDialog();
                     break;
                 case 1:
+                    SaveWindow saveAnother = new SaveWindow("名前を付けて評価を保存",SaveMode.OVERWRITE);
+                    saveAnother.ShowDialog();
                     break;
                 case 2:
                     break;
