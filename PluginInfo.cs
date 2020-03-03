@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITToolKit_3
+namespace Chickweed
 {
     /// <summary>
     /// プラグインに関する情報
@@ -48,7 +48,7 @@ namespace ITToolKit_3
             //プラグインフォルダ
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             folder += "\\plugins";
-            if (!Directory.Exists(folder)) Directory.CreateDirectory("./plugins");
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
                
 
             //.dllファイルを探す

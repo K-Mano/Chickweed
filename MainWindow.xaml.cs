@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ITToolKit_3
+namespace Chickweed
 {
     /// <summary>
     /// プラグインで実装するインターフェイス
@@ -115,12 +115,6 @@ namespace ITToolKit_3
                 {
                     appversion.Text = "バージョン "+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                    NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
-
-                    adaptername.Text = network.GetAdapterName(adapter);
-                    vendorname.Text  = network.GetAdapterVendor(adapter);
-                    phynumber.Text   = network.GetMacAddressFromAdapter(adapter);
-
                     string release_id    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
                     string major_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
                     string minor_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "UBR", "").ToString();
@@ -144,6 +138,12 @@ namespace ITToolKit_3
                     }
                     maker.Text   = reg.GetHardwareVendorName();
                     sysname.Text = reg.GetHardwareModelName();
+
+                    NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
+
+                    adaptername.Text = network.GetAdapterName(adapter);
+                    vendorname.Text = network.GetAdapterVendor(adapter);
+                    phynumber.Text = network.GetMacAddressFromAdapter(adapter);
                 }
                 catch (Exception)
                 {
@@ -156,7 +156,7 @@ namespace ITToolKit_3
                     {
                         result = 0;
 
-                        errordialog.Caption             = "ITToolKit™ 評価システム";
+                        errordialog.Caption             = "Chickweed™ 評価システム";
                         errordialog.InstructionText     = "一部の情報を取得できませんでした";
                         errordialog.Text                = "評価に必要な情報が不足しています。タスクを選択してください。";
                         errordialog.Icon                = TaskDialogStandardIcon.Error;
@@ -224,7 +224,7 @@ namespace ITToolKit_3
             {
                 result = 0;
 
-                savedialog.Caption              = "ITToolKit™";
+                savedialog.Caption              = "Chickweed™";
                 savedialog.InstructionText      = "評価の結果に対するタスクを選択してください。";
                 savedialog.Cancelable           = true;
                 savedialog.OwnerWindowHandle    = Handle;
@@ -277,7 +277,7 @@ namespace ITToolKit_3
             {
                 result = 0;
 
-                savedialog.Caption              = "ITToolKit™";
+                savedialog.Caption              = "Chickweed™";
                 savedialog.InstructionText      = "評価の結果に対するタスクを選択してください。";
                 savedialog.Cancelable           = true;
                 savedialog.OwnerWindowHandle    = Handle;
@@ -405,6 +405,7 @@ namespace ITToolKit_3
             {
                 shortcut.WorkingDirectory = workingPath;
             }
+
             // アイコンのパス
             shortcut.IconLocation = iconPath;
 
@@ -436,17 +437,10 @@ namespace ITToolKit_3
             DateTime expire = DateTime.Parse(string.Format("20{0:00}/{1}/31", yearExpire, monthExpire));
 
             //年度換算
-            DateTime checkpoint = new DateTime();
+            DateTime checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
             switch (date.CompareTo(checkSpan))
             {
-                case -1:
-                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
-                    break;
-                case 0:
-                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
-                    break;
                 case 1:
-                    checkpoint = new DateTime(date.Year, 3, 31, 0, 0, 0);
                     checkpoint.AddYears(1);
                     break;
             }

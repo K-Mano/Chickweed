@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Management;
 
-namespace ITToolKit_3
+namespace Chickweed
 {
     class GetRegistryKeys
     {

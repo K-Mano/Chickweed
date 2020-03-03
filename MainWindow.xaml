@@ -1,17 +1,17 @@
-﻿<Window x:Name="disp" x:Class="ITToolKit_3.MainWindow"
+﻿<Window x:Name="disp" x:Class="Chickweed.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ITToolKit_3"
+        xmlns:local="clr-namespace:Chickweed"
         mc:Ignorable="d"
-        Title="ITToolKit™" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="Disp_Closing">
+        Title="Chickweed™" Height="425" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="Disp_Closing">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid>
             <TabControl x:Name="MainTabControl" Margin="10" Grid.Column="0" TabStripPlacement="Top">
                 <TabItem x:Name="default" Header="メイン">
                     <Grid Margin="10">
-                        <TextBlock Text="寮内インターネットの使用及びPC持込許可に必要な情報の取得" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
+                        <TextBlock Text="評価結果" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
                         <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
                             <Grid>
                                 <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
@@ -61,10 +61,10 @@
                                             <TextBlock Text="総合評価: "/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <TextBlock x:Name="maker" Text="Maker"/>
-                                            <TextBlock x:Name="sysname" Text="Name"/>
+                                            <TextBlock x:Name="maker" Text="取得失敗"/>
+                                            <TextBlock x:Name="sysname" Text="取得失敗"/>
                                             <Grid Height="20"/>
-                                            <TextBlock x:Name="evaluation" Text="Judge" FontWeight="Bold"/>
+                                            <TextBlock x:Name="evaluation" Text="評価不可" FontWeight="Bold"/>
                                         </StackPanel>
                                     </Grid>
                                     <StackPanel>
@@ -101,9 +101,9 @@
                                         <TextBlock Text="寮内インターネット/PC申請有効期限: "/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock x:Name="releaseid" Text="0000"/>
-                                        <TextBlock x:Name="support" Text="20XX年 X月31日まで"/>
-                                        <TextBlock x:Name="active" Text="20XX年 3月31日まで"/>
+                                        <TextBlock x:Name="releaseid" Text="取得失敗"/>
+                                        <TextBlock x:Name="support" Text="取得失敗"/>
+                                        <TextBlock x:Name="active" Text="取得失敗"/>
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -126,58 +126,7 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="settings" Header="設定">
-                    <Grid Margin="10">
-                        <TextBlock Text="設定" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
-                        <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
-                            <Grid>
-                                <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
-                                <TextBlock Text="既定の動作  " HorizontalAlignment="Left" Background="White"/>
-                            </Grid>
-                            <Grid>
-                                <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
-                                <TextBlock Text="バージョン情報  " Background="White" HorizontalAlignment="Left"/>
-                            </Grid>
-                            <Grid>
-                                <StackPanel Margin="20">
-                                    <Viewbox HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="260">
-                                        <Canvas Height="24" Width="24">
-                                            <Path Fill="Black" Data="M 5.9337501 19.841497 V 2.0614977 H 2.6063502 V 19.841497 Z"/>
-                                            <Path Fill="Black" Data="m 14.470928 19.841497 h 3.3528 V 5.1094976 h 5.6388 V 2.0614977 c -5.1562 0 -9.4996 0 -14.6303996 0 v 3.0479999 h 5.6387996 z"/>
-                                            <Path Fill="Black" Data="m 30.097881 19.841497 h 3.3528 V 5.1094976 h 5.6388 V 2.0614977 c -5.1562 0 -9.4996 0 -14.6304 0 v 3.0479999 h 5.6388 z"/>
-                                            <Path Fill="Black" Data="m 43.368586 7.0652976 c -3.9878 0 -6.477 2.9464004 -6.477 6.5278004 0 3.606799 2.4384 6.527799 6.5024 6.527799 4.064 0 6.5278 -2.921 6.5278 -6.527799 0 -3.5814 -2.5654 -6.5278004 -6.5532 -6.5278004 z m 0.0254 2.8194 c 2.0828 0 3.4036 1.8288004 3.4036 3.7084004 0 1.904999 -1.143 3.682999 -3.4036 3.682999 -2.2606 0 -3.4036 -1.778 -3.4036 -3.682999 0 -1.8796 1.1684 -3.7084004 3.4036 -3.7084004 z"/>
-                                            <Path Fill="Black" Data="m 57.953745 7.0652976 c -3.9878 0 -6.477 2.9464004 -6.477 6.5278004 0 3.606799 2.4384 6.527799 6.5024 6.527799 4.064 0 6.5278 -2.921 6.5278 -6.527799 0 -3.5814 -2.5654 -6.5278004 -6.5532 -6.5278004 z m 0.0254 2.8194 c 2.0828 0 3.4036 1.8288004 3.4036 3.7084004 0 1.904999 -1.143 3.682999 -3.4036 3.682999 -2.2606 0 -3.4036 -1.778 -3.4036 -3.682999 0 -1.8796 1.1684 -3.7084004 3.4036 -3.7084004 z"/>
-                                            <Path Fill="Black" Data="M 66.646097 2.0868977 V 19.841497 h 3.0734 V 2.0868977 Z"/>
-                                            <Path Fill="Black" Data="m 86.953795 2.0614977 h -4.1656 l -6.7564 7.5183999 V 2.0614977 H 72.678996 V 19.841497 h 3.352799 v -7.873999 l 7.4422 7.873999 h 4.1402 v -0.2032 l -8.5598 -8.966199 7.8994 -8.5090003 z"/>
-                                            <Path Fill="Black" Data="M 92.168336 7.2684976 V 19.841497 h -3.0988 V 7.2684976 Z m -3.3782 -3.4797999 c 0 2.4129999 3.6576 2.4129999 3.6576 0 0 -2.413 -3.6576 -2.413 -3.6576 0 z"/>
-                                            <Path Fill="Black" Data="m 96.243055 4.1188977 v 3.2257999 h -2.3368 v 2.6670004 h 2.3368 v 5.410199 c 0 3.1242 1.778 4.6736 4.495795 4.572 0.9398 -0.0254 1.6764 -0.1778 2.5654 -0.5334 l -0.8636 -2.6416 c -0.4572 0.2286 -1.016 0.381 -1.4986 0.381 -0.965195 0 -1.625595 -0.5842 -1.625595 -1.778 v -5.410199 h 3.479795 V 7.3446976 H 99.341855 V 3.7886977 Z"/>
-                                            <Path Fill="Black" Data="m 109.23356 4.0680977 h 2.4384 v -2.032 h -7.2644 v 2.032 h 2.413 v 5.3847999 h 2.413 z m 5.7912 -2.0574 h -2.54 v 7.4421999 h 2.4638 v -2.2098 l -0.1778 -2.159 1.9812 2.7178 h 0.508 l 2.032 -2.7178 -0.1778 2.159 v 2.2098 h 2.4638 V 2.0106977 h -2.54 l -2.0066 2.4638 z"/>
-                                        </Canvas>
-                                    </Viewbox>
-                                    <Grid Height="5"/>
-                                    <TextBlock x:Name="appversion" Text="バージョン"/>
-                                    <Grid Height="5"/>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="クレジット: "/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="K-Mano"/>
-                                            <TextBlock Text="Naoki Takahashi"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </Grid>
-
-                        </StackPanel>
-                    </Grid>
-                </TabItem>
-
-                <TabItem x:Name="others" Header="その他の機能" Visibility="Visible">
+                <TabItem x:Name="others" Header="管理" Visibility="Visible">
                     <Grid Margin="10">
                         <TextBlock Text="新規申請許可PCのセットアップ" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
                         <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
@@ -200,6 +149,96 @@
 									<Button x:Name="GoToUpdateSetting" Content="設定を開く" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="90" Click="GoToUpdateSetting_Click"></Button>
 								</StackPanel>
 							</Grid>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="settings" Header="その他">
+                    <Grid Margin="10">
+                        <TextBlock Text="その他" FontSize="16" Foreground="#FF464BA0" VerticalAlignment="Top"/>
+                        <StackPanel Margin="10" VerticalAlignment="Bottom" Height="275">
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
+                                <TextBlock Text="基本設定  " HorizontalAlignment="Left" Background="White"/>
+                            </Grid>
+                            <Grid>
+                                <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+                                <TextBlock Text="バージョン情報  " Background="White" HorizontalAlignment="Left"/>
+                            </Grid>
+                            <Grid>
+                                <StackPanel Margin="20">
+                                    <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="64">
+                                        <Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Name="svg8" Width="200" Height="30">
+                                            <Canvas.RenderTransform>
+                                                <TranslateTransform X="0" Y="0"/>
+                                            </Canvas.RenderTransform>
+                                            <Canvas.Resources/>
+                                            <Canvas Name="layer1">
+                                                <Canvas.RenderTransform>
+                                                    <TranslateTransform X="0.230818" Y="0.064896"/>
+                                                </Canvas.RenderTransform>
+                                                <Canvas Name="g934">
+                                                    <Canvas.RenderTransform>
+                                                        <TranslateTransform X="-11.339286" Y="-46.68846"/>
+                                                    </Canvas.RenderTransform>
+                                                    <Canvas Name="text817" Opacity="1">
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path882" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 22.487668 63.692364 q 0.474133 0 0.474133 -0.451556 v -1.354666 q 0 -0.451556 -0.474133 -0.451556 h -6.028267 q -0.383822 0 -0.654755 -0.248356 l -2.009423 -1.873955 q -0.316089 -0.293511 -0.316089 -0.722489 v -6.863645 q 0 -0.428977 0.316089 -0.722488 l 2.032 -1.896534 q 0.270934 -0.248355 0.654756 -0.248355 h 6.005689 q 0.474133 0 0.474133 -0.451556 v -1.332089 q 0 -0.451555 -0.474133 -0.451555 H 16.36909 q -1.241778 0 -2.099733 0.8128 l -2.144889 1.986844 q -1.016 0.925689 -1.016 2.302933 v 6.886223 q 0 1.377244 1.016 2.302933 l 2.167466 1.964267 q 0.880534 0.8128 2.077156 0.8128 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path884" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 35.485765 55.609519 q 0 -1.106311 -0.857956 -1.896533 l -1.761066 -1.648178 q -0.722489 -0.654755 -1.715911 -0.654755 h -4.041423 v -4.380089 q 0 -0.4064 -0.4064 -0.4064 h -1.286933 q -0.4064 0 -0.4064 0.4064 v 16.256 q 0 0.4064 0.4064 0.4064 h 1.309511 q 0.4064 0 0.4064 -0.4064 V 53.87103 q 0 -0.451555 0.451556 -0.451555 h 3.4544 q 0.225777 0 0.383822 0.158044 l 1.738489 1.603022 q 0.2032 0.180623 0.2032 0.428978 v 7.676445 q 0 0.4064 0.4064 0.4064 h 1.309511 q 0.4064 0 0.4064 -0.4064 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path886" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 40.09657 63.285964 q 0 0.4064 -0.428977 0.4064 h -1.286934 q -0.4064 0 -0.4064 -0.4064 V 51.816453 q 0 -0.4064 0.4064 -0.4064 h 1.286934 q 0.428977 0 0.428977 0.4064 z m 0 -14.224 q 0 0.4064 -0.428977 0.4064 h -1.286934 q -0.4064 0 -0.4064 -0.4064 v -2.032 q 0 -0.4064 0.4064 -0.4064 h 1.286934 q 0.428977 0 0.428977 0.4064 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path888" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 46.708332 51.410053 q -1.016 0 -1.738489 0.654755 l -1.761067 1.648178 q -0.835378 0.790222 -0.835378 1.896533 v 3.883378 q 0 1.128889 0.835378 1.896533 l 1.761067 1.648178 q 0.722489 0.654756 1.738489 0.654756 h 4.741333 q 0.4064 0 0.4064 -0.4064 v -1.196622 q 0 -0.4064 -0.4064 -0.4064 h -4.628444 q -0.248356 0 -0.4064 -0.158045 L 44.69891 59.921875 q -0.2032 -0.158045 -0.2032 -0.428978 v -3.883378 q 0 -0.248355 0.2032 -0.428978 l 1.715911 -1.603022 q 0.158044 -0.158044 0.4064 -0.158044 h 4.628444 q 0.4064 0 0.4064 -0.383822 v -1.2192 q 0 -0.4064 -0.4064 -0.4064 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path890" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 64.58993 52.109964 v -1.377245 q 0 -0.4064 -0.4064 -0.4064 h -1.309511 q -0.4064 0 -0.4064 0.4064 v 1.377245 q 0 0.248355 -0.2032 0.428977 l -1.715911 1.603023 q -0.180623 0.158044 -0.4064 0.158044 h -3.4544 q -0.451556 0 -0.451556 -0.451555 v -6.818489 q 0 -0.4064 -0.428978 -0.4064 h -1.286933 q -0.4064 0 -0.4064 0.4064 v 16.256 q 0 0.4064 0.4064 0.4064 h 1.309511 q 0.4064 0 0.4064 -0.4064 v -6.524978 q 0 -0.451556 0.451556 -0.451556 h 3.4544 q 0.225777 0 0.383822 0.158045 l 1.738489 1.603022 q 0.2032 0.180622 0.2032 0.428978 v 4.786489 q 0 0.4064 0.4064 0.4064 h 1.309511 q 0.4064 0 0.4064 -0.4064 v -4.786489 q 0 -1.106311 -0.857956 -1.896534 l -1.399822 -1.309511 1.4224 -1.286933 q 0.835378 -0.790222 0.835378 -1.896533 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path892" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 82.228114 61.38943 -1.761066 1.648178 q -0.722489 0.654756 -1.715911 0.654756 h -0.519289 q -1.016 0 -1.715911 -0.654756 L 74.95807 61.59263 73.422781 63.037608 q -0.722489 0.654756 -1.738489 0.654756 h -0.496711 q -1.016 0 -1.738489 -0.654756 L 67.688025 61.38943 q -0.835377 -0.767644 -0.835377 -1.896533 v -7.676444 q 0 -0.4064 0.4064 -0.4064 h 1.309511 q 0.4064 0 0.4064 0.4064 v 7.676444 q 0 0.248356 0.180622 0.428978 l 1.738489 1.603022 q 0.158044 0.158045 0.4064 0.158045 h 0.270933 q 0.248356 0 0.4064 -0.158045 l 1.738489 -1.603022 q 0.180622 -0.180622 0.180622 -0.428978 v -7.676444 q 0 -0.4064 0.4064 -0.4064 h 1.309511 q 0.4064 0 0.4064 0.4064 v 7.676444 q 0 0.248356 0.2032 0.428978 l 1.715912 1.603022 q 0.180622 0.158045 0.4064 0.158045 h 0.293511 q 0.225777 0 0.383822 -0.158045 l 1.738489 -1.603022 q 0.2032 -0.180622 0.2032 -0.428978 v -7.676444 q 0 -0.4064 0.4064 -0.4064 h 1.286933 q 0.428978 0 0.428978 0.4064 v 7.676444 q 0 1.106311 -0.857956 1.896533 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path894" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 94.179874 58.567208 q 0.4064 0 0.4064 -0.4064 v -1.196622 q 0 -0.4064 -0.4064 -0.4064 h -6.615288 q -0.338667 0 -0.338667 -0.338667 v -0.6096 q 0 -0.248355 0.2032 -0.428978 l 1.715911 -1.603022 q 0.158044 -0.158044 0.4064 -0.158044 h 4.628444 q 0.4064 0 0.4064 -0.383822 v -1.2192 q 0 -0.4064 -0.4064 -0.4064 h -4.741333 q -1.016 0 -1.738489 0.654755 l -1.761066 1.648178 q -0.835378 0.790222 -0.835378 1.896533 v 3.883378 q 0 1.128889 0.835378 1.896533 l 1.761066 1.648178 q 0.722489 0.654756 1.738489 0.654756 h 4.741333 q 0.4064 0 0.4064 -0.4064 v -1.196622 q 0 -0.4064 -0.4064 -0.4064 H 89.55143 q -0.248356 0 -0.4064 -0.158045 l -1.715911 -1.603022 q -0.2032 -0.180622 -0.2032 -0.428978 v -0.587022 q 0 -0.338667 0.338667 -0.338667 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path896" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 105.24828 58.567208 q 0.4064 0 0.4064 -0.4064 v -1.196622 q 0 -0.4064 -0.4064 -0.4064 h -6.615289 q -0.338667 0 -0.338667 -0.338667 v -0.6096 q 0 -0.248355 0.2032 -0.428978 l 1.715916 -1.603022 q 0.15804 -0.158044 0.4064 -0.158044 h 4.62844 q 0.4064 0 0.4064 -0.383822 v -1.2192 q 0 -0.4064 -0.4064 -0.4064 h -4.74133 q -1.016004 0 -1.738493 0.654755 l -1.761066 1.648178 q -0.835378 0.790222 -0.835378 1.896533 v 3.883378 q 0 1.128889 0.835378 1.896533 l 1.761066 1.648178 q 0.722489 0.654756 1.738493 0.654756 h 4.74133 q 0.4064 0 0.4064 -0.4064 v -1.196622 q 0 -0.4064 -0.4064 -0.4064 h -4.62844 q -0.24836 0 -0.4064 -0.158045 l -1.715916 -1.603022 q -0.2032 -0.180622 -0.2032 -0.428978 v -0.587022 q 0 -0.338667 0.338667 -0.338667 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path898" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 107.24041 55.609519 v 3.883378 q 0 1.128889 0.83538 1.896533 l 1.76106 1.648178 q 0.72249 0.654756 1.73849 0.654756 h 5.73476 q 0.4064 0 0.4064 -0.4064 v -16.256 q 0 -0.4064 -0.4064 -0.4064 h -1.30951 q -0.4064 0 -0.4064 0.4064 v 4.380089 h -4.01885 q -1.016 0 -1.73849 0.654755 l -1.76106 1.648178 q -0.83538 0.790222 -0.83538 1.896533 z m 2.12231 0 q 0 -0.248355 0.2032 -0.428978 l 1.71591 -1.603022 q 0.18062 -0.158044 0.4064 -0.158044 h 3.4544 q 0.45156 0 0.45156 0.451555 v 7.360356 q 0 0.451556 -0.45156 0.451556 h -3.4544 q -0.22578 0 -0.4064 -0.158045 l -1.71591 -1.603022 q -0.2032 -0.158045 -0.2032 -0.428978 z"/>
+                                                    </Canvas>
+                                                    <Canvas Name="text821" Opacity="1">
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path863" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 15.666181 67.536854 -0.8128 -0.745067 q -0.3302 -0.3048 -0.778933 -0.3048 h -2.7178 q -0.169333 0 -0.169333 0.1778 v 6.053667 q 0 0.169333 0.169333 0.169333 h 0.550333 q 0.169334 0 0.169334 -0.169333 v -2.065867 q 0 -0.1778 0.169333 -0.1778 h 1.8288 q 0.465666 0 0.7874 -0.3048 l 0.804333 -0.745067 q 0.381 -0.347133 0.381 -0.872066 v -0.1524 q 0 -0.516467 -0.381 -0.8636 z m -0.508 1.0414 q 0 0.160866 -0.118533 0.270933 l -0.753534 0.702733 q -0.1016 0.08467 -0.245533 0.08467 h -1.794933 q -0.169333 0 -0.169333 -0.169333 v -1.9558 q 0 -0.1778 0.169333 -0.1778 h 1.794933 q 0.143933 0 0.245533 0.09313 l 0.753534 0.702733 q 0.118533 0.110067 0.118533 0.270934 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path865" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 20.338325 69.14552 -0.6604 -0.618066 Q 19.406992 68.28192 19.025992 68.28192 h -0.677333 q -0.381 0 -0.651933 0.245534 l -0.6604 0.618066 q -0.313267 0.287867 -0.313267 0.7112 v 1.456267 q 0 0.414867 0.313267 0.7112 l 0.6604 0.618067 q 0.270933 0.245533 0.651933 0.245533 h 0.677333 q 0.381 0 0.651933 -0.245533 l 0.6604 -0.618067 q 0.313267 -0.296333 0.313267 -0.7112 V 69.85672 q 0 -0.423333 -0.313267 -0.7112 z m -0.4826 2.167467 q 0 0.09313 -0.06773 0.160867 l -0.651933 0.601133 q -0.06773 0.05927 -0.1524 0.05927 h -0.592667 q -0.08467 0 -0.1524 -0.05927 l -0.643466 -0.601133 q -0.0762 -0.06773 -0.0762 -0.160867 V 69.85672 q 0 -0.1016 0.0762 -0.160866 l 0.643466 -0.601134 q 0.06773 -0.05927 0.1524 -0.05927 h 0.592667 q 0.08467 0 0.1524 0.05927 l 0.651933 0.601134 q 0.06773 0.05927 0.06773 0.160866 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path867" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 27.187197 72.024187 -0.6604 0.618067 q -0.270933 0.245533 -0.643467 0.245533 h -0.194733 q -0.381 0 -0.643467 -0.245533 l -0.584199 -0.541867 -0.575734 0.541867 q -0.270933 0.245533 -0.651933 0.245533 h -0.186267 q -0.381 0 -0.651933 -0.245533 l -0.6604 -0.618067 q -0.313267 -0.287867 -0.313267 -0.7112 V 68.43432 q 0 -0.1524 0.1524 -0.1524 h 0.491067 q 0.1524 0 0.1524 0.1524 v 2.878667 q 0 0.09313 0.06773 0.160867 l 0.651934 0.601133 q 0.05927 0.05927 0.1524 0.05927 h 0.1016 q 0.09313 0 0.1524 -0.05927 l 0.651933 -0.601133 q 0.06773 -0.06773 0.06773 -0.160867 V 68.43432 q 0 -0.1524 0.1524 -0.1524 h 0.491067 q 0.1524 0 0.1524 0.1524 v 2.878667 q 0 0.09313 0.0762 0.160867 l 0.643466 0.601133 q 0.06773 0.05927 0.1524 0.05927 h 0.110067 q 0.08467 0 0.143933 -0.05927 l 0.651934 -0.601133 q 0.0762 -0.06773 0.0762 -0.160867 V 68.43432 q 0 -0.1524 0.1524 -0.1524 h 0.4826 q 0.160866 0 0.160866 0.1524 v 2.878667 q 0 0.414867 -0.321733 0.7112 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path869" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 31.669105 70.965854 q 0.1524 0 0.1524 -0.1524 V 70.36472 q 0 -0.1524 -0.1524 -0.1524 h -2.480733 q -0.127 0 -0.127 -0.127 v -0.2286 q 0 -0.09313 0.0762 -0.160866 l 0.643467 -0.601134 q 0.05927 -0.05927 0.1524 -0.05927 h 1.735666 q 0.1524 0 0.1524 -0.143934 v -0.4572 q 0 -0.1524 -0.1524 -0.1524 h -1.778 q -0.381 0 -0.651933 0.245534 l -0.6604 0.618066 q -0.313266 0.296334 -0.313266 0.7112 v 1.456267 q 0 0.423333 0.313266 0.7112 l 0.6604 0.618067 q 0.270933 0.245533 0.651933 0.245533 h 1.778 q 0.1524 0 0.1524 -0.1524 V 72.28665 q 0 -0.1524 -0.1524 -0.1524 h -1.735666 q -0.09313 0 -0.1524 -0.05927 l -0.643467 -0.601133 q -0.0762 -0.06773 -0.0762 -0.160867 v -0.220133 q 0 -0.127 0.127 -0.127 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path871" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 35.032357 68.28192 h -0.905933 q -0.381 0 -0.651933 0.245534 l -0.1778 0.169333 V 68.43432 q 0 -0.1524 -0.160867 -0.1524 h -0.4826 q -0.1524 0 -0.1524 0.1524 v 4.301067 q 0 0.1524 0.1524 0.1524 h 0.4826 q 0.160867 0 0.160867 -0.1524 V 69.85672 q 0 -0.1016 0.06773 -0.160866 l 0.651933 -0.601134 q 0.05927 -0.05927 0.143934 -0.05927 h 0.872066 q 0.1524 0 0.1524 -0.1524 v -0.44873 q 0 -0.1524 -0.1524 -0.1524 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path873" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 39.176658 70.965854 q 0.1524 0 0.1524 -0.1524 V 70.36472 q 0 -0.1524 -0.1524 -0.1524 h -2.480733 q -0.127 0 -0.127 -0.127 v -0.2286 q 0 -0.09313 0.0762 -0.160866 l 0.643467 -0.601134 q 0.05927 -0.05927 0.1524 -0.05927 h 1.735666 q 0.1524 0 0.1524 -0.143934 v -0.4572 q 0 -0.1524 -0.1524 -0.1524 h -1.777999 q -0.381 0 -0.651934 0.245534 l -0.6604 0.618066 q -0.313266 0.296334 -0.313266 0.7112 v 1.456267 q 0 0.423333 0.313266 0.7112 l 0.6604 0.618067 q 0.270934 0.245533 0.651934 0.245533 h 1.777999 q 0.1524 0 0.1524 -0.1524 V 72.28665 q 0 -0.1524 -0.1524 -0.1524 h -1.735666 q -0.09313 0 -0.1524 -0.05927 l -0.643467 -0.601133 q -0.0762 -0.06773 -0.0762 -0.160867 v -0.220133 q 0 -0.127 0.127 -0.127 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path875" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 39.923709 69.85672 v 1.456267 q 0 0.423333 0.313266 0.7112 l 0.6604 0.618067 q 0.270934 0.245533 0.651934 0.245533 h 2.150533 q 0.1524 0 0.1524 -0.1524 v -6.096 q 0 -0.1524 -0.1524 -0.1524 h -0.491067 q -0.1524 0 -0.1524 0.1524 v 1.642533 h -1.507066 q -0.381 0 -0.651934 0.245534 l -0.6604 0.618066 q -0.313266 0.296334 -0.313266 0.7112 z m 0.795866 0 q 0 -0.09313 0.0762 -0.160866 l 0.643467 -0.601134 q 0.06773 -0.05927 0.1524 -0.05927 h 1.2954 q 0.169333 0 0.169333 0.169333 v 2.760133 q 0 0.169334 -0.169333 0.169334 h -1.2954 q -0.08467 0 -0.1524 -0.05927 l -0.643467 -0.601133 q -0.0762 -0.05927 -0.0762 -0.160867 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path877" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 51.868852 69.14552 -0.6604 -0.618066 Q 50.945985 68.28192 50.564985 68.28192 h -1.507066 v -1.642533 q 0 -0.1524 -0.160867 -0.1524 h -0.4826 q -0.1524 0 -0.1524 0.1524 v 6.096 q 0 0.1524 0.1524 0.1524 h 2.150533 q 0.381 0 0.643467 -0.245533 l 0.6604 -0.618067 q 0.321733 -0.287867 0.321733 -0.7112 V 69.85672 q 0 -0.414866 -0.321733 -0.7112 z m -0.474133 2.167467 q 0 0.1016 -0.0762 0.160867 l -0.643467 0.601133 q -0.06773 0.05927 -0.1524 0.05927 h -1.2954 q -0.169333 0 -0.169333 -0.169334 V 69.20479 q 0 -0.169333 0.169333 -0.169333 h 1.2954 q 0.08467 0 0.1524 0.05927 l 0.643467 0.601134 q 0.0762 0.06773 0.0762 0.160866 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path879" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 56.884956 68.43432 q 0 -0.1524 -0.1524 -0.1524 h -0.491067 q -0.1524 0 -0.1524 0.1524 v 3.5306 q 0 0.1778 -0.169333 0.1778 h -1.2954 q -0.08467 0 -0.1524 -0.05927 L 53.82849 71.48232 q -0.0762 -0.06773 -0.0762 -0.160866 V 68.43432 q 0 -0.1524 -0.1524 -0.1524 h -0.491067 q -0.1524 0 -0.1524 0.1524 v 2.887134 q 0 0.414866 0.313267 0.7112 l 0.668866 0.6096 q 0.262467 0.254 0.643467 0.254 h 1.337733 q 0.169333 0 0.169333 0.169333 v 0.3048 q 0 0.1016 -0.0762 0.169333 l -0.643466 0.592667 q -0.06773 0.06773 -0.1524 0.06773 H 53.90469 q -0.1524 0 -0.1524 0.1524 v 0.4572 q 0 0.143933 0.1524 0.143933 h 1.354666 q 0.372533 0 0.643467 -0.254 l 0.668866 -0.618066 q 0.313267 -0.287867 0.313267 -0.7112 z"/>
+                                                    </Canvas>
+                                                    <Canvas Name="text825" Opacity="1">
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path844" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 62.24131 72.920403 v -5.926667 h -1.109133 v 5.926667 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path846" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 65.087036 72.920403 h 1.1176 v -4.910667 h 1.8796 v -1.016 c -1.718734 0 -3.166534 0 -4.8768 0 v 1.016 h 1.8796 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path848" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 70.296019 72.920403 h 1.1176 v -4.910667 h 1.8796 v -1.016 c -1.718733 0 -3.166533 0 -4.876799 0 v 1.016 h 1.879599 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path850" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 74.719588 68.661669 c -1.329267 0 -2.159 0.982134 -2.159 2.175934 0 1.202266 0.8128 2.175933 2.167466 2.175933 1.354667 0 2.175934 -0.973667 2.175934 -2.175933 0 -1.1938 -0.855134 -2.175934 -2.1844 -2.175934 z m 0.0085 0.9398 c 0.694267 0 1.134534 0.6096 1.134534 1.236134 0 0.635 -0.381 1.227666 -1.134534 1.227666 -0.753533 0 -1.134533 -0.592666 -1.134533 -1.227666 0 -0.626534 0.389467 -1.236134 1.134533 -1.236134 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path852" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 79.581307 68.661669 c -1.329267 0 -2.159 0.982134 -2.159 2.175934 0 1.202266 0.8128 2.175933 2.167467 2.175933 1.354666 0 2.175933 -0.973667 2.175933 -2.175933 0 -1.1938 -0.855133 -2.175934 -2.1844 -2.175934 z m 0.0085 0.9398 c 0.694266 0 1.134533 0.6096 1.134533 1.236134 0 0.635 -0.381 1.227666 -1.134533 1.227666 -0.753534 0 -1.134534 -0.592666 -1.134534 -1.227666 0 -0.626534 0.389467 -1.236134 1.134534 -1.236134 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path854" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 82.478759 67.002203 v 5.9182 h 1.024467 v -5.9182 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path856" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 89.247991 66.993736 h -1.388533 l -2.252134 2.506133 v -2.506133 h -1.1176 v 5.926667 h 1.1176 v -2.624667 l 2.480734 2.624667 h 1.380066 v -0.06773 l -2.853266 -2.988733 2.633133 -2.836333 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path858" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 90.986171 68.729403 v 4.191 h -1.032934 v -4.191 z m -1.126067 -1.159934 c 0 0.804334 1.2192 0.804334 1.2192 0 0 -0.804333 -1.2192 -0.804333 -1.2192 0 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path860" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 92.344409 67.679536 v 1.075267 h -0.778933 v 0.889 h 0.778933 v 1.8034 c 0 1.0414 0.592667 1.557866 1.4986 1.524 0.313266 -0.0085 0.5588 -0.05927 0.855133 -0.1778 l -0.287867 -0.880534 c -0.1524 0.0762 -0.338666 0.127 -0.499533 0.127 -0.321733 0 -0.541867 -0.194733 -0.541867 -0.592666 v -1.8034 h 1.159934 v -0.889 h -1.151467 v -1.185334 z"/>
+                                                    </Canvas>
+                                                    <Canvas Name="text837" Opacity="1">
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path839" Fill="#FF000000" StrokeThickness="0.26458332" Data="m 121.74125 50.665478 v -3.048221 h 1.0473 V 46.68846 h -3.26319 v 0.928797 h 1.04731 v 3.048221 z"/>
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path841" Fill="#FF000000" StrokeThickness="0.26458332" Data="M 127.69437 50.665478 V 46.68846 h -1.35048 l -0.88745 2.367469 h -0.0221 l -0.89021 -2.367469 h -1.35048 v 3.977018 h 1.01975 v -2.30408 h 0.022 l 0.89573 2.30408 h 0.62563 l 0.89572 -2.30408 h 0.0221 v 2.30408 z"/>
+                                                    </Canvas>
+                                                </Canvas>
+                                            </Canvas>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <Grid Height="10"/>
+                                    <TextBlock x:Name="appversion" Text="バージョン"/>
+                                    <Grid Height="10"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="6*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="クレジット: "/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="-"/>
+                                            <TextBlock Text="-"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </Grid>
                 </TabItem>

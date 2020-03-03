@@ -1,6 +1,6 @@
 ﻿using System.Net.NetworkInformation;
 
-namespace ITToolKit_3
+namespace Chickweed
 {
     public class NetworkAdapter
     {

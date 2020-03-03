@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace ITToolKit_3
+namespace Chickweed
 {
     /// <summary>
     /// App.xaml の相互作用ロジック
