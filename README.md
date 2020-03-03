@@ -1,4 +1,4 @@
-# ITToolKit-Portable
+# Chickweed
 IT管理委員を支援するためのソフトウェアです。
 システム情報などを自動的に取得し、リストに表示します。また、ExcelBook形式(.xlsx)で取得したデータを出力することができます。
 
