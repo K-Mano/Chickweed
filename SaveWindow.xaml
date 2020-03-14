@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chickweed"
         mc:Ignorable="d"
-        Title="ITToolKit™ - 評価を保存" Height="400" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="SaveDialog_Closing" FontFamily="Yu Gothic UI">
-    <Grid>
+        Title="" Height="270" Width="560" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontFamily="Yu Gothic UI" Background="Transparent" SnapsToDevicePixels="True">
+    <Grid Background="White">
         <StackPanel Margin="10">
             <GroupBox Header="学籍情報" >
-                <StackPanel Margin="5" >
+                <StackPanel Margin="10" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
@@ -17,17 +17,17 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="*学籍番号:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <Grid Grid.Column="1">
+                        <Grid Grid.Column="1" Height="22">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock x:Name="foreigntext" Text="foreign " Grid.Column="0" Visibility="Collapsed"/>
-                            <TextBox HorizontalAlignment="Stretch" Grid.Column="1"/>
+                            <TextBox x:Name="snum" HorizontalAlignment="Stretch" Grid.Column="1" MaxLength="7"/>
                         </Grid>
                         <CheckBox x:Name="foreign" Content="短期留学生" VerticalAlignment="Center" Margin="5,0" Grid.Column="2" Checked="foreign_Checked" Unchecked="foreign_Unchecked"/>
                     </Grid>
-                    <Grid Margin="0,5,0,0">
+                    <Grid Margin="0,5,0,0" Height="22">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="2*"/>
@@ -38,6 +38,41 @@
                     </Grid>
                 </StackPanel>
             </GroupBox>
+            <GroupBox Header="その他" >
+                <StackPanel Margin="10" Height="22" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="担当者:" Grid.Column="0" VerticalAlignment="Center"/>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="foreigntext1" Text="foreign " Grid.Column="0" Visibility="Collapsed"/>
+                            <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Height="22"/>
+                        </Grid>
+                        <Button x:Name="auth" Grid.Column="2" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" Width="90" Margin="5,0" Click="auth_Click" Style="{StaticResource SystemAero2Style}" Background="#FFE1E1E1" BorderBrush="#FFADADAD">
+                            <TextBlock Text="Use Credential" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                    </Grid>
+
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
+        <Image Height="16" Width="16" Margin="15,-27" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Border Height="44" VerticalAlignment="Bottom" BorderThickness="0,1,0,0" BorderBrush="#FFE3E3E3" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10">
+                <Button x:Name="cancel" Width="90" Height="22" Margin="5,0" Background="#FFE1E1E1" BorderBrush="#FFADADAD" Style="{StaticResource SystemAero2Style}" Click="cancel_Click">
+                    <TextBlock Text="キャンセル" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Button>
+                <Button x:Name="save" Width="90" Height="22" Margin="5,0" Background="#FFE1E1E1" BorderBrush="#FFADADAD" Style="{StaticResource SystemAero2Style}" Click="save_Click">
+                    <TextBlock Text="保存" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

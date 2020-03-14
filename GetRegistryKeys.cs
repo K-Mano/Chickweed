@@ -3,12 +3,8 @@ using System.Management;
 
 namespace Chickweed
 {
-    class GetRegistryKeys
+    class HardwareInfo
     {
-        /// <summary>
-        /// 古い方法
-        /// </summary>
-
         public string GetHardwareModelName()
         {
             ManagementScope scope = new ManagementScope("root\\cimv2");

@@ -1,13 +1,78 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Chickweed">
-    <Style x:Key="ReadOnlyTextBox" TargetType="TextBox">
+    <Style x:Key="ReadOnlyTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style TargetType="Button" x:Key="SystemAero2Style" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
-                    <ContentPresenter x:Name="ContentElement" />
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                        <ContentPresenter/>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <!--<Trigger Property="IsDefault" Value="true">
+                <Setter Property="BorderThickness" Value="2"/>
+            </Trigger>-->
+            <Trigger Property="IsMouseOver" Value="true">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#E5F1FB" Duration="0:0:0.3"/>
+                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#0078D7" Duration="0:0:0.3"/>
+                            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Duration="0:0:3" FillBehavior="HoldEnd">
+                                <ThicknessAnimationUsingKeyFrames.KeyFrames>
+                                    <LinearThicknessKeyFrame KeyTime="0:0:0.5">
+                                        <LinearThicknessKeyFrame.Value>
+                                            <Thickness Left="1" Right="1" Top="1" Bottom="1" />
+                                        </LinearThicknessKeyFrame.Value>
+                                    </LinearThicknessKeyFrame>
+                                </ThicknessAnimationUsingKeyFrames.KeyFrames>
+                            </ThicknessAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation  Storyboard.TargetProperty="Background.Color" From="#E5F1FB" Duration="0:0:0.3" />
+                            <ColorAnimation  Storyboard.TargetProperty="BorderBrush.Color" From="#0078D7" Duration="0:0:0.3" />
+                            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Duration="0:0:3" FillBehavior="HoldEnd">
+                                <ThicknessAnimationUsingKeyFrames.KeyFrames>
+                                    <LinearThicknessKeyFrame KeyTime="0:0:0.5">
+                                        <LinearThicknessKeyFrame.Value>
+                                            <Thickness Left="1" Right="1" Top="1" Bottom="1" />
+                                        </LinearThicknessKeyFrame.Value>
+                                    </LinearThicknessKeyFrame>
+                                </ThicknessAnimationUsingKeyFrames.KeyFrames>
+                            </ThicknessAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#CCE4F7" Duration="0:0:0"/>
+                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#005499" Duration="0:0:0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" From="#CCE4F7" Duration="0:0:0"/>
+                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" From="#005499" Duration="0:0:0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

@@ -1,11 +1,13 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using CredentialManagement;
+using ClosedXML.Excel;
 
 namespace Chickweed
 {
@@ -52,6 +54,19 @@ namespace Chickweed
         /// </summary>
         TabControl MainTabControl { get; }
     }
+    public struct DeviceInfo
+    {
+        public int[] PhysicalAddress;
+        public string StudentNumber;
+        public string Vendor;
+        public string OSName;
+        public string ReleaseID;
+        public string MajorVersion;
+        public string MinorVersion;
+        public string DeviceName;
+        public string StudentName;
+        public string CreatorName;
+    }
     public partial class MainWindow : Window
     {
         /// <summary>
@@ -95,8 +110,10 @@ namespace Chickweed
         /// </summary>
         
         NetworkAdapter network = new NetworkAdapter();
-        GetRegistryKeys reg = new GetRegistryKeys();
+        HardwareInfo reg = new HardwareInfo();
         Utilities util = new Utilities();
+
+        DeviceInfo info = new DeviceInfo();
 
         int result = 0;
 
@@ -115,16 +132,16 @@ namespace Chickweed
                 {
                     appversion.Text = "バージョン "+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                    string release_id    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
-                    string major_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
-                    string minor_version = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "UBR", "").ToString();
+                    info.ReleaseID    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
+                    info.MajorVersion = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
+                    info.MinorVersion = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "UBR", "").ToString();
 
                     windows.Text = reg.GetOSFullName();
-                    version.Text = "バージョン " + release_id + " (OSビルド " + major_version + "." + minor_version + ")";
+                    version.Text = "バージョン " + info.ReleaseID + " (OSビルド " + info.MajorVersion + "." + info.MinorVersion + ")";
 
-                    releaseid.Text = release_id;
+                    releaseid.Text = info.ReleaseID;
 
-                    SupportData data = JudgeVersion(release_id, dateTime);
+                    SupportData data = JudgeVersion(info.ReleaseID, dateTime);
                     support.Text = data.WExpireDate.ToString("yyyy年MM月dd日まで");
                     active.Text  = data.DExpireDate.ToString("yyyy年MM月31日まで");
 
@@ -142,14 +159,13 @@ namespace Chickweed
                     NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
 
                     adaptername.Text = network.GetAdapterName(adapter);
-                    vendorname.Text = network.GetAdapterVendor(adapter);
-                    phynumber.Text = network.GetMacAddressFromAdapter(adapter);
+                    vendorname.Text  = network.GetAdapterVendor(adapter);
+                    phynumber.Text   = network.GetMacAddressFromAdapter(adapter);
                 }
                 catch (Exception)
                 {
                     errorcount = 1;
                 }
-
                 if (errorcount != 0)
                 {
                     using (TaskDialog errordialog = new TaskDialog())
@@ -161,9 +177,16 @@ namespace Chickweed
                         errordialog.Text                = "評価に必要な情報が不足しています。タスクを選択してください。";
                         errordialog.Icon                = TaskDialogStandardIcon.Error;
                         errordialog.OwnerWindowHandle   = Handle;
+                        errordialog.HyperlinksEnabled   = true;
+                        errordialog.FooterText          = "再度実行しても評価ができない場合は<a href=\"./Chickweedマニュアル.pdf\">マニュアル</a>に沿って解決または手動で評価してください。";
 
                         var retry = new TaskDialogCommandLink("retry", "再度評価を実施する(&R)\n一時的な問題はこれらによって解決する可能性があります。");
                         retry.Default = true;
+                        errordialog.HyperlinkClick += (sender, e) =>
+                        {
+                            Process.Start(e.LinkText);
+                        };
+
                         retry.Click += (sender, e) =>
                         {
                             result = 0;
@@ -207,6 +230,97 @@ namespace Chickweed
                 plugins[number].Run();
             }
         }
+
+        private void FileOK(string filename,SaveOptions options)
+        {
+            try
+            {
+                switch (options)
+                {
+                    case SaveOptions.OVERWRITE:
+                        break;
+                    case SaveOptions.SAVE:
+                        XLWorkbook objWBook = new XLWorkbook();
+                        IXLWorksheet objSheet = objWBook.Worksheets.Add("Sheet1");
+
+                        if (!File.Exists(filename))
+                        {
+                            //n列目
+                            objSheet.Range("A2").Value = string.Empty;
+                            objSheet.Range("B2").Value = 1;
+                            objSheet.Range("C2").Value = info.StudentNumber;
+                            objSheet.Range("D2").Value = info.StudentName;
+                            objSheet.Range("E2").Value = info.Vendor;
+                            objSheet.Range("F2").Value = info.DeviceName;
+                            objSheet.Range("G2").Value = info.OSName;
+                            ///MACアドレス
+                            objSheet.Range("H2").Value = info.PhysicalAddress[0];
+                            objSheet.Range("I2").Value = info.PhysicalAddress[1];
+                            objSheet.Range("J2").Value = info.PhysicalAddress[2];
+                            objSheet.Range("K2").Value = info.PhysicalAddress[3];
+                            objSheet.Range("L2").Value = info.PhysicalAddress[4];
+                            objSheet.Range("M2").Value = info.PhysicalAddress[5];
+                            ///
+                            objSheet.Range("N2").Value = info.CreatorName;
+                            //保存(新規)
+                            objWBook.SaveAs(filename);
+                        }
+                        else
+                        {
+                            objSheet.Range("G1:L1").Merge();
+                            //1列目(ヘッダー)
+                            objSheet.Range("A1").Value = "確認欄";
+                            objSheet.Range("B1").Value = "NO.";
+                            objSheet.Range("C1").Value = "学籍番号";
+                            objSheet.Range("D1").Value = "名前";
+                            objSheet.Range("E1").Value = "メーカー";
+                            objSheet.Range("F1").Value = "機種名";
+                            objSheet.Range("G1").Value = "OS";
+                            objSheet.Range("H1").Value = "MACアドレス";
+                            objSheet.Range("I1").Value = "入力者名";
+                            //2列目
+                            objSheet.Range("A2").Value = string.Empty;
+                            objSheet.Range("B2").Value = 1;
+                            objSheet.Range("C2").Value = info.StudentNumber;
+                            objSheet.Range("D2").Value = info.StudentName;
+                            objSheet.Range("E2").Value = info.Vendor;
+                            objSheet.Range("F2").Value = info.DeviceName;
+                            objSheet.Range("G2").Value = info.OSName;
+                            ///MACアドレス
+                            objSheet.Range("H2").Value = info.PhysicalAddress[0];
+                            objSheet.Range("I2").Value = info.PhysicalAddress[1];
+                            objSheet.Range("J2").Value = info.PhysicalAddress[2];
+                            objSheet.Range("K2").Value = info.PhysicalAddress[3];
+                            objSheet.Range("L2").Value = info.PhysicalAddress[4];
+                            objSheet.Range("M2").Value = info.PhysicalAddress[5];
+                            ///
+                            objSheet.Range("N2").Value = info.CreatorName;
+                            //保存(新規)
+                            objWBook.SaveAs(filename);
+                        }
+                        break;
+                }
+            }
+            catch(Exception e)
+            {
+                TaskDialog error = new TaskDialog
+                {
+                    Caption = "Chickweed™",
+                    InstructionText = "ファイルの保存に失敗しました",
+                    Text = "エラーの詳細は以下を確認してください。",
+                    DetailsExpandedLabel = "詳細を非表示",
+                    DetailsCollapsedLabel = "詳細を表示",
+                    DetailsExpandedText = e.Message,
+                    FooterText = "「<a>Chickweed™ マニュアル</a>」を開いて改善策を模索します",
+                    FooterIcon = TaskDialogStandardIcon.Information,
+                    HyperlinksEnabled = true,
+                    OwnerWindowHandle = Handle,
+                    DetailsExpanded = true,
+                    Icon = TaskDialogStandardIcon.Error
+                };
+                error.Show();
+            }
+        }
         private void Disp_Loaded(object sender, RoutedEventArgs e)
         {
             InitPlugins();
@@ -220,6 +334,55 @@ namespace Chickweed
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            if ((Check1.IsChecked & Check2.IsChecked & Check3.IsChecked) == false)
+            {
+                int result = 0;
+                using (TaskDialog checkdialog = new TaskDialog())
+                {
+                    checkdialog.Caption           = "Chickweed™";
+                    checkdialog.InstructionText   = "チェックリストは確認しましたか?";
+                    checkdialog.Text              = "[続行]をクリックするとこの操作を完了します。";
+                    checkdialog.Cancelable        = false;
+                    checkdialog.FooterIcon        = TaskDialogStandardIcon.Information;
+                    checkdialog.FooterText        = "チェックリストについては「<a>詳細</a>」タブを確認してください";
+                    checkdialog.HyperlinksEnabled = true;
+
+                    TaskDialogButton cancel = new TaskDialogButton("cancel", "キャンセル");
+                    TaskDialogButton allow  = new TaskDialogButton("allow", "続行(&C)");
+
+                    checkdialog.HyperlinkClick += (sender, e) =>
+                    {
+                        checkdialog.Close();
+                        MainTabControl.SelectedIndex = 1;
+                        result = 1;
+                    };
+
+                    allow.Click += (sender, e) =>{
+                        checkdialog.Close();
+                        result = 0;
+                        Check1.IsChecked = true;
+                        Check2.IsChecked = true;
+                        Check3.IsChecked = true;
+                    };
+
+                    cancel.Click += (sender, e) => {
+                        checkdialog.Close();
+                        result = 1;
+                    };
+
+                    cancel.Default = true;
+
+                    checkdialog.Controls.Add(allow);
+                    checkdialog.Controls.Add(cancel);
+
+                    checkdialog.OwnerWindowHandle = Handle;
+                    checkdialog.Show();
+                }
+                if (result!=0)
+                {
+                    return;
+                }
+            }
             using (TaskDialog savedialog = new TaskDialog())
             {
                 result = 0;
@@ -260,20 +423,21 @@ namespace Chickweed
             switch (result)
             {
                 case 0:
-                    SaveWindow saveNormal = new SaveWindow("評価を保存",SaveMode.SAVE);
+                    SaveWindow saveNormal = new SaveWindow("評価を保存",SaveOptions.SAVE);
                     saveNormal.ShowDialog();
                     break;
                 case 1:
-                    SaveWindow saveAnother = new SaveWindow("名前を付けて評価を保存",SaveMode.OVERWRITE);
+                    SaveWindow saveAnother = new SaveWindow("名前を付けて評価を保存",SaveOptions.OVERWRITE);
                     saveAnother.ShowDialog();
                     break;
                 case 2:
                     break;
             }
         }
+
         private void Disp_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            using (TaskDialog savedialog = new TaskDialog())
+            using (Microsoft.WindowsAPICodePack.Dialogs.TaskDialog savedialog = new Microsoft.WindowsAPICodePack.Dialogs.TaskDialog())
             {
                 result = 0;
 
@@ -518,6 +682,23 @@ namespace Chickweed
             }
             //string[] winver_splitted = winver.Split(' ');
             //return "8"; //winver_splitted[2];
+        }
+
+        private void cred_Click(object sender, RoutedEventArgs e)
+        {
+            VistaPrompt cred = new VistaPrompt
+            {
+                Domain = "ANAN-NCT",
+                ShowSaveCheckBox = true,
+                Title = "資格情報が必要です",
+                Message = "ドメイン: ANAN-NCT"
+            };
+
+            DialogResult result = cred.ShowDialog();
+            if (result==CredentialManagement.DialogResult.OK)
+            {
+
+            }
         }
     }
 }
