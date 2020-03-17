@@ -1,13 +1,13 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using CredentialManagement;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using CredentialManagement;
-using ClosedXML.Excel;
 
 namespace Chickweed
 {
@@ -67,6 +67,12 @@ namespace Chickweed
         public string StudentName;
         public string CreatorName;
     }
+
+    public enum TaskDialogResult
+    {
+        CANCEL = 0,
+        RETRY = 1
+    }
     public partial class MainWindow : Window
     {
         /// <summary>
@@ -108,31 +114,30 @@ namespace Chickweed
         /// <summary>
         /// 各クラスの初期化
         /// </summary>
-        
+
         NetworkAdapter network = new NetworkAdapter();
         HardwareInfo reg = new HardwareInfo();
         Utilities util = new Utilities();
 
-        DeviceInfo info = new DeviceInfo();
-
-        int result = 0;
+        public DeviceInfo info = new DeviceInfo();
 
         /// <summary>
         /// データの取得処理
         /// </summary>
+
         private void Setup()
         {
             int errorcount;
             DateTime dateTime = DateTime.Now;
-            
+
             do
             {
                 errorcount = 0;
                 try
                 {
-                    appversion.Text = "バージョン "+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                    appversion.Text = "バージョン " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                    info.ReleaseID    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
+                    info.ReleaseID = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
                     info.MajorVersion = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
                     info.MinorVersion = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "UBR", "").ToString();
 
@@ -143,8 +148,17 @@ namespace Chickweed
 
                     SupportData data = JudgeVersion(info.ReleaseID, dateTime);
                     support.Text = data.WExpireDate.ToString("yyyy年MM月dd日まで");
-                    active.Text  = data.DExpireDate.ToString("yyyy年MM月31日まで");
+                    active.Text = data.DExpireDate.ToString("yyyy年MM月31日まで");
+                    maker.Text = reg.GetHardwareVendorName();
+                    sysname.Text = reg.GetHardwareModelName();
 
+                    NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
+
+                    adaptername.Text = network.GetAdapterName(adapter);
+                    vendorname.Text = network.GetAdapterVendor(adapter);
+                    phynumber.Text = network.GetMacAddressFromAdapter(adapter);
+
+                    /*
                     if (JudgeWindowsVersion(reg.GetOSFullName()) == "10")
                     {
                         evaluation.Text = data.EvaluationText;
@@ -152,33 +166,26 @@ namespace Chickweed
                     else {
                         evaluation.Foreground = new SolidColorBrush(Colors.Red);
                         evaluation.Text = "IT管理委員は資料を見て評価してください";
-                    }
-                    maker.Text   = reg.GetHardwareVendorName();
-                    sysname.Text = reg.GetHardwareModelName();
-
-                    NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
-
-                    adaptername.Text = network.GetAdapterName(adapter);
-                    vendorname.Text  = network.GetAdapterVendor(adapter);
-                    phynumber.Text   = network.GetMacAddressFromAdapter(adapter);
+                    }*/
                 }
                 catch (Exception)
                 {
-                    errorcount = 1;
+                    errorcount += 1;
+                    continue;
                 }
                 if (errorcount != 0)
                 {
+                    TaskDialogResult errorDialogResult = new TaskDialogResult();
                     using (TaskDialog errordialog = new TaskDialog())
                     {
-                        result = 0;
 
-                        errordialog.Caption             = "Chickweed™ 評価システム";
-                        errordialog.InstructionText     = "一部の情報を取得できませんでした";
-                        errordialog.Text                = "評価に必要な情報が不足しています。タスクを選択してください。";
-                        errordialog.Icon                = TaskDialogStandardIcon.Error;
-                        errordialog.OwnerWindowHandle   = Handle;
-                        errordialog.HyperlinksEnabled   = true;
-                        errordialog.FooterText          = "再度実行しても評価ができない場合は<a href=\"./Chickweedマニュアル.pdf\">マニュアル</a>に沿って解決または手動で評価してください。";
+                        errordialog.Caption = "Chickweed™ 評価システム";
+                        errordialog.InstructionText = "一部の情報を取得できませんでした";
+                        errordialog.Text = "評価に必要な情報が不足しています。タスクを選択してください。";
+                        errordialog.Icon = TaskDialogStandardIcon.Error;
+                        errordialog.OwnerWindowHandle = Handle;
+                        errordialog.HyperlinksEnabled = true;
+                        errordialog.FooterText = "再度実行しても評価ができない場合は<a href=\"./Chickweedマニュアル.pdf\">マニュアル</a>に沿って解決または手動で評価してください。";
 
                         var retry = new TaskDialogCommandLink("retry", "再度評価を実施する(&R)\n一時的な問題はこれらによって解決する可能性があります。");
                         retry.Default = true;
@@ -189,7 +196,7 @@ namespace Chickweed
 
                         retry.Click += (sender, e) =>
                         {
-                            result = 0;
+                            errorDialogResult = TaskDialogResult.RETRY;
                             errordialog.Close();
                         };
                         errordialog.Controls.Add(retry);
@@ -197,18 +204,18 @@ namespace Chickweed
                         var cancel = new TaskDialogCommandLink("cancel", "評価を終了する(&X)");
                         cancel.Click += (sender, e) =>
                         {
-                            result = 1;
+                            errorDialogResult = TaskDialogResult.CANCEL;
                             errordialog.Close();
                         };
                         errordialog.Controls.Add(cancel);
 
                         errordialog.Show();
                     }
-                    switch (result)
+                    switch (errorDialogResult)
                     {
-                        case 0:
+                        case TaskDialogResult.RETRY:
                             continue;
-                        case 1:
+                        case TaskDialogResult.CANCEL:
                             errorcount = 0;
                             break;
                     }
@@ -231,7 +238,7 @@ namespace Chickweed
             }
         }
 
-        private void FileOK(string filename,SaveOptions options)
+        private void FileOK(string filename, SaveOptions options)
         {
             try
             {
@@ -301,7 +308,7 @@ namespace Chickweed
                         break;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 TaskDialog error = new TaskDialog
                 {
@@ -339,16 +346,16 @@ namespace Chickweed
                 int result = 0;
                 using (TaskDialog checkdialog = new TaskDialog())
                 {
-                    checkdialog.Caption           = "Chickweed™";
-                    checkdialog.InstructionText   = "チェックリストは確認しましたか?";
-                    checkdialog.Text              = "[続行]をクリックするとこの操作を完了します。";
-                    checkdialog.Cancelable        = false;
-                    checkdialog.FooterIcon        = TaskDialogStandardIcon.Information;
-                    checkdialog.FooterText        = "チェックリストについては「<a>詳細</a>」タブを確認してください";
+                    checkdialog.Caption = "Chickweed™";
+                    checkdialog.InstructionText = "チェックリストは確認しましたか?";
+                    checkdialog.Text = "[続行]をクリックするとこの操作を完了します。";
+                    checkdialog.Cancelable = false;
+                    checkdialog.FooterIcon = TaskDialogStandardIcon.Information;
+                    checkdialog.FooterText = "チェックリストについては「<a>詳細</a>」タブを確認してください";
                     checkdialog.HyperlinksEnabled = true;
 
                     TaskDialogButton cancel = new TaskDialogButton("cancel", "キャンセル");
-                    TaskDialogButton allow  = new TaskDialogButton("allow", "続行(&C)");
+                    TaskDialogButton allow = new TaskDialogButton("allow", "続行(&C)");
 
                     checkdialog.HyperlinkClick += (sender, e) =>
                     {
@@ -357,7 +364,8 @@ namespace Chickweed
                         result = 1;
                     };
 
-                    allow.Click += (sender, e) =>{
+                    allow.Click += (sender, e) =>
+                    {
                         checkdialog.Close();
                         result = 0;
                         Check1.IsChecked = true;
@@ -365,7 +373,8 @@ namespace Chickweed
                         Check3.IsChecked = true;
                     };
 
-                    cancel.Click += (sender, e) => {
+                    cancel.Click += (sender, e) =>
+                    {
                         checkdialog.Close();
                         result = 1;
                     };
@@ -378,25 +387,24 @@ namespace Chickweed
                     checkdialog.OwnerWindowHandle = Handle;
                     checkdialog.Show();
                 }
-                if (result!=0)
+                if (result != 0)
                 {
                     return;
                 }
             }
+            SaveOptions saveDialogResult = new SaveOptions();
             using (TaskDialog savedialog = new TaskDialog())
             {
-                result = 0;
-
-                savedialog.Caption              = "Chickweed™";
-                savedialog.InstructionText      = "評価の結果に対するタスクを選択してください。";
-                savedialog.Cancelable           = true;
-                savedialog.OwnerWindowHandle    = Handle;
+                savedialog.Caption = "Chickweed™";
+                savedialog.InstructionText = "評価の結果に対するタスクを選択してください。";
+                savedialog.Cancelable = true;
+                savedialog.OwnerWindowHandle = Handle;
 
                 var savenormal = new TaskDialogCommandLink("savenormal", "既定のファイルに保存(&E)\n既定のファイルに追記します。通常はこれを選択してください。");
                 savenormal.Default = true;
                 savenormal.Click += (sender, e) =>
                 {
-                    result = 0;
+                    saveDialogResult = SaveOptions.SAVE;
                     savedialog.Close();
                 };
                 savedialog.Controls.Add(savenormal);
@@ -404,7 +412,7 @@ namespace Chickweed
                 var savenew = new TaskDialogCommandLink("savenew", "名前を付けて保存(&A)\n別名で保存します。上書きの場合は元のデータが消去されます。");
                 savenew.Click += (sender, e) =>
                 {
-                    result = 1;
+                    saveDialogResult = SaveOptions.OVERWRITE;
                     savedialog.Close();
                 };
 
@@ -413,44 +421,43 @@ namespace Chickweed
                 var exit = new TaskDialogCommandLink("exit", "キャンセル(&C)");
                 exit.Click += (sender, e) =>
                 {
-                    result = 2;
+                    saveDialogResult = SaveOptions.CANCEL;
                     savedialog.Close();
                 };
                 savedialog.Controls.Add(exit);
 
                 savedialog.Show();
             }
-            switch (result)
+            switch (saveDialogResult)
             {
-                case 0:
-                    SaveWindow saveNormal = new SaveWindow("評価を保存",SaveOptions.SAVE);
+                case SaveOptions.CANCEL:
+                    break;
+                case SaveOptions.SAVE:
+                    SaveWindow saveNormal = new SaveWindow("評価を保存", SaveOptions.SAVE);
                     saveNormal.ShowDialog();
                     break;
-                case 1:
-                    SaveWindow saveAnother = new SaveWindow("名前を付けて評価を保存",SaveOptions.OVERWRITE);
+                case SaveOptions.OVERWRITE:
+                    SaveWindow saveAnother = new SaveWindow("名前を付けて評価を保存", SaveOptions.OVERWRITE);
                     saveAnother.ShowDialog();
-                    break;
-                case 2:
                     break;
             }
         }
-
-        private void Disp_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        
+        /*private void Disp_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            using (Microsoft.WindowsAPICodePack.Dialogs.TaskDialog savedialog = new Microsoft.WindowsAPICodePack.Dialogs.TaskDialog())
+            SaveOptions saveDialogResult = new SaveOptions();
+            using (TaskDialog savedialog = new TaskDialog())
             {
-                result = 0;
-
-                savedialog.Caption              = "Chickweed™";
-                savedialog.InstructionText      = "評価の結果に対するタスクを選択してください。";
-                savedialog.Cancelable           = true;
-                savedialog.OwnerWindowHandle    = Handle;
+                savedialog.Caption = "Chickweed™";
+                savedialog.InstructionText = "評価の結果に対するタスクを選択してください。";
+                savedialog.Cancelable = true;
+                savedialog.OwnerWindowHandle = Handle;
 
                 var savenormal = new TaskDialogCommandLink("savenormal", "既定のファイルに保存(&E)\n既定のファイルに追記します。通常はこれを選択してください。");
                 savenormal.Default = true;
                 savenormal.Click += (sender, e) =>
                 {
-                    result = 1;
+                    saveDialogResult = SaveOptions.SAVE;
                     savedialog.Close();
                 };
                 savedialog.Controls.Add(savenormal);
@@ -458,7 +465,7 @@ namespace Chickweed
                 var savenew = new TaskDialogCommandLink("savenew", "名前を付けて保存(&A)\n別名で保存します。上書きの場合は元のデータが消去されます。");
                 savenew.Click += (sender, e) =>
                 {
-                    result = 2;
+                    saveDialogResult = SaveOptions.OVERWRITE;
                     savedialog.Close();
                 };
 
@@ -467,32 +474,32 @@ namespace Chickweed
                 var exit = new TaskDialogCommandLink("exit", "保存せずに終了(&X)");
                 exit.Click += (sender, e) =>
                 {
-                    result = 3;
+                    saveDialogResult = SaveOptions.EXIT;
                     savedialog.Close();
                 };
                 savedialog.Controls.Add(exit);
 
                 savedialog.Show();
             }
-            switch (result)
+            switch (saveDialogResult)
             {
-                case 0:
+                case SaveOptions.CANCEL:
                     e.Cancel = true;
                     break;
-                case 1:
+                case SaveOptions.SAVE:
                     break;
-                case 2:
+                case SaveOptions.OVERWRITE:
                     break;
-                case 3:
+                case SaveOptions.EXIT:
                     Application.Current.Shutdown();
                     break;
             }
-        }
+        }*/
 
         private void GoToProxySetting_Click(object sender, RoutedEventArgs e)
         {
             string winver = JudgeWindowsVersion(reg.GetOSFullName());
-            if (winver == "10") 
+            if (winver == "10")
             {
                 Process.Start("ms-settings:network-proxy");
             }
@@ -552,7 +559,7 @@ namespace Chickweed
         public void CreateShortcut(string Name, string linkPath, string workingPath, string iconPath)
         {
             // 作成するショートカットのパス
-            string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),@Name+".lnk");
+            string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), @Name + ".lnk");
 
             // WshShellを作成
             Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
@@ -581,20 +588,20 @@ namespace Chickweed
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
         }
 
-        public SupportData JudgeVersion(string id, DateTime date) 
+        public SupportData JudgeVersion(string id, DateTime date)
         {
             SupportData support = new SupportData();
             //サポート期間の定数
-            const int supportPeriod  = 18;
+            const int supportPeriod = 18;
             //チェックするタイミング
-            DateTime checkSpan = new DateTime(date.Year,4,1,0,0,0);
+            DateTime checkSpan = new DateTime(date.Year, 4, 1, 0, 0, 0);
 
             //VersionIDから取得したリリース年月
-            int idYear      = int.Parse(util.SubstringAtCount(id, 2)[0]);
-            int idMonth     = int.Parse(util.SubstringAtCount(id, 2)[1]);
+            int idYear = int.Parse(util.SubstringAtCount(id, 2)[0]);
+            int idMonth = int.Parse(util.SubstringAtCount(id, 2)[1]);
 
             //そのバージョンのサポート期間の計算
-            int yearExpire  = util.DateCount(idYear, idMonth, 0, supportPeriod)[0];
+            int yearExpire = util.DateCount(idYear, idMonth, 0, supportPeriod)[0];
             int monthExpire = util.DateCount(idYear, idMonth, 0, supportPeriod)[1];
 
             //DateTime型に変換したサポート期間
@@ -666,13 +673,13 @@ namespace Chickweed
             }*/
         }
 
-        public string JudgeWindowsVersion(string winver) 
+        public string JudgeWindowsVersion(string winver)
         {
             if (winver.Contains("10"))
             {
                 return "10";
             }
-            else if(winver.Contains("8"))
+            else if (winver.Contains("8"))
             {
                 return "8";
             }
@@ -695,9 +702,50 @@ namespace Chickweed
             };
 
             DialogResult result = cred.ShowDialog();
-            if (result==CredentialManagement.DialogResult.OK)
+            if (result == CredentialManagement.DialogResult.OK)
             {
 
+            }
+        }
+
+        private void RunCMD(string strcmd)
+        {
+            try
+            {
+                Process proc = new Process();
+                proc.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec");
+                proc.StartInfo.CreateNoWindow = true;
+                proc.StartInfo.Arguments = "/c " + strcmd;
+                proc.Start();
+                proc.WaitForExit();
+                proc.Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("プロキシの設定に失敗しました。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private void setProxy_Click(object sender, RoutedEventArgs e)
+        {
+            if (noproxy.IsChecked == true)
+            {
+                //通常のプロキシ
+                RunCMD(@"reg add ""HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings"" /f /v ProxyEnable /t reg_dword /d 0");
+                //WinHTTPプロキシ(Windows Update等に使用)
+                //RunCMD("netsh winhttp reset proxy");
+            }
+            else if (kosen.IsChecked == true)
+            {
+                //通常のプロキシ
+                RunCMD(@"reg add ""HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings"" /f /v ProxyEnable /t reg_dword /d 1");
+                RunCMD(@"reg add ""HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings"" /f /v ProxyServer /t reg_sz /d proxy.anan-nct.ac.jp:8080");
+                RunCMD(@"reg add ""HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings"" /f /v ProxyOverride /t reg_sz /d ""<local>""");
+                //RunCMD(@"reg add ""HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings"" /f /v ProxyOverride /t reg_sz /d ""192.168.0.50;<local>""");
+                //WinHTTPプロキシ(Windows Update等に使用)
+                //RunCMD("netsh winhttp set proxy proxy-server=\"proxy.anan-nct.ac.jp:8080\"");
+                //RunCMD("netsh winhttp set proxy proxy-server=\"proxy.anan-nct.ac.jp:8080\" bypass-list=\"192.168.0.50\"");
             }
         }
     }

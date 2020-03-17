@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chickweed
 {
@@ -49,7 +45,7 @@ namespace Chickweed
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             folder += "\\plugins";
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-               
+
 
             //.dllファイルを探す
             string[] dlls = Directory.GetFiles(folder, "*.dll");
@@ -93,7 +89,7 @@ namespace Chickweed
                                                     false,                              // 大文字小文字を無視するかどうか
                                                     BindingFlags.CreateInstance,        // インスタンスを生成
                                                     null,                               // 通常はnullでOK,
-                                                    new object[] {main},                // コンストラクタの引数
+                                                    new object[] { main },                // コンストラクタの引数
                                                     null,                               // カルチャ設定（通常はnullでOK）
                                                     null                                // ローカル実行の場合はnullでOK
                                                   );

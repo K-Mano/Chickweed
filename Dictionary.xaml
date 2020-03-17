@@ -75,4 +75,23 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="WatermarkTextBox" TargetType="TextBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="Frame" Background="WhiteSmoke" BorderBrush="LightGray" BorderThickness="1" Height="22">
+                        <Grid>
+                            <TextBlock Foreground="DarkGray" Margin="2,0" Grid.Column="1" x:Name="WaterMarkLabel" Text="{TemplateBinding Tag}" Opacity=".5" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Grid.Column="1"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

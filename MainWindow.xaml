@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chickweed"
         mc:Ignorable="d"
-        Title="Chickweed™ for NITAC" Height="430" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded" Closing="Disp_Closing">
+        Title="Chickweed™ for NITAC" Height="430" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" FontFamily="Yu Gothic UI" SnapsToDevicePixels="True" Loaded="Disp_Loaded">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid>
             <TabControl x:Name="MainTabControl" Margin="10" Grid.Column="0" TabStripPlacement="Top">
@@ -145,7 +145,7 @@
                                 <Label Content="家やその他の場所のAPに接続する場合はプロキシなしに設定します。" HorizontalAlignment="Left" Margin="14,61,0,0" VerticalAlignment="Top"/>
                             </Grid>
                             <Grid Margin="20,0" Height="22">
-                                <Button Width="90" Style="{StaticResource SystemAero2Style}" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="#FFE1E1E1" BorderBrush="#FFADADAD">
+                                <Button x:Name="setProxy" Width="90" Style="{StaticResource SystemAero2Style}" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="#FFE1E1E1" BorderBrush="#FFADADAD" Click="setProxy_Click">
                                     <TextBlock Text="設定する" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Button>
                             </Grid>
@@ -173,8 +173,8 @@
                                         <Rectangle Grid.Column="0" Grid.RowSpan="2">
                                             <Rectangle.Fill>
                                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                    <GradientStop Color="#147714" Offset="0"/>
-                                                    <GradientStop Color="#3FB23F" Offset="1"/>
+                                                    <GradientStop Color="#FFF2B102" Offset="0"/>
+                                                    <GradientStop Color="#FFFECC44" Offset="1"/>
                                                 </LinearGradientBrush>
                                             </Rectangle.Fill>
                                         </Rectangle>
@@ -184,18 +184,28 @@
                                                 <RowDefinition Height="30"/>
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Text="コンピュータの更新プログラムを確認します" Grid.Row="0" VerticalAlignment="Center" Foreground="#FF324BA0"/>
+                                            <TextBlock Text="コンピュータの更新プログラムを確認します" Grid.Row="0" VerticalAlignment="Center" Foreground="#FF324BA0" Margin="5"/>
                                             <Grid Height="55" Grid.Row="1" VerticalAlignment="Top">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*"/>
                                                     <ColumnDefinition Width="4"/>
                                                     <ColumnDefinition Width="1*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Grid Grid.Column="0"/>
+                                                <Grid Grid.Column="0" Margin="5">
+                                                    <TextBlock>
+                                                        <Hyperlink NavigateUri="https://ja.wikipedia.org/wiki/RUNNING_TO_HORIZON">
+                                                            ここをクリックして利用可能な更新プログラム
+                                                            <LineBreak/>
+                                                            のリストを表示します
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                </Grid>
                                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                                                     <Separator Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
                                                 </StackPanel>
-                                                <Grid Grid.Column="2"/>
+                                                <Grid Grid.Column="2" Margin="5">
+                                                    <TextBlock Text="状態: 不明"/>
+                                                </Grid>
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -212,10 +222,16 @@
                                 <Separator VerticalAlignment="Top" Margin="9" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
                                 <TextBlock Text="基本設定  " HorizontalAlignment="Left" Background="White"/>
                             </Grid>
-                            <Grid Margin="20">
-                                <StackPanel>
-                                    <Button x:Name="cred" HorizontalAlignment="Right" Content="サインイン" Click="cred_Click"/>
-                                </StackPanel>
+                            <Grid Margin="20" Height="22">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="言語:" Grid.Column="0" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Column="1">
+                                    <ComboBoxItem Content="日本語(既定)" IsSelected="True"/>
+                                </ComboBox>
                             </Grid>
                             <Grid>
                                 <Separator VerticalAlignment="Top" Margin="0,9,9,0" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
@@ -223,8 +239,8 @@
                             </Grid>
                             <Grid>
                                 <StackPanel Margin="20">
-                                    <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="64">
-                                        <Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Name="svg8" Width="200" Height="30">
+                                    <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="48">
+                                        <Canvas Width="150" Height="32" SnapsToDevicePixels="True">
                                             <Canvas.RenderTransform>
                                                 <TranslateTransform X="0" Y="0"/>
                                             </Canvas.RenderTransform>
@@ -284,14 +300,28 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="6*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="5*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
+                                            <TextBlock Text="最終更新日:"/>
+                                            <Grid Height="10"/>
                                             <TextBlock Text="クレジット: "/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
+                                            <TextBlock Text="2020/03/17"/>
+                                            <Grid Height="10"/>
                                             <TextBlock Text="K-Mano"/>
                                             <TextBlock Text="Nemuki"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock/>
+                                            <Grid Height="10"/>
+                                            <TextBlock>
+                                                <Hyperlink NavigateUri="1177265@st.anan-nct.ac.jp">
+                                                    1177265@st.anan-nct.ac.jp
+                                                </Hyperlink>
+                                            </TextBlock>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>

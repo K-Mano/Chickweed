@@ -5,61 +5,84 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chickweed"
         mc:Ignorable="d"
-        Title="" Height="270" Width="560" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontFamily="Yu Gothic UI" Background="Transparent" SnapsToDevicePixels="True">
+        Title="" Height="265" Width="560" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontFamily="Yu Gothic UI" Background="Transparent" SnapsToDevicePixels="True">
     <Grid Background="White">
         <StackPanel Margin="10">
             <GroupBox Header="学籍情報" >
                 <StackPanel Margin="10" >
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="4*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="*学籍番号:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <Grid Grid.Column="1" Height="22">
+                        <TextBlock Text="*学籍番号:" Grid.Column="0" VerticalAlignment="Center" Margin="0,3"/>
+                        <Viewbox Width="16" Height="16" Grid.Column="1">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="Green" Data="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                            </Canvas>
+                        </Viewbox>
+                        <Grid Grid.Column="2" Height="22">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="foreigntext" Text="foreign " Grid.Column="0" Visibility="Collapsed"/>
-                            <TextBox x:Name="snum" HorizontalAlignment="Stretch" Grid.Column="1" MaxLength="7"/>
+                            <TextBlock x:Name="foreigntext" Text="foreign " Grid.Column="0" Visibility="Collapsed" VerticalAlignment="Center"/>
+                            <TextBox x:Name="snum" HorizontalAlignment="Stretch" Grid.Column="2" MaxLength="7" Style="{StaticResource WatermarkTextBox}" Tag="数字のみ"/>
                         </Grid>
-                        <CheckBox x:Name="foreign" Content="短期留学生" VerticalAlignment="Center" Margin="5,0" Grid.Column="2" Checked="foreign_Checked" Unchecked="foreign_Unchecked"/>
+                        <CheckBox x:Name="foreign" Content="短期留学生" VerticalAlignment="Center" Margin="5,4" Grid.Column="3" Checked="foreign_Checked" Unchecked="foreign_Unchecked"/>
                     </Grid>
                     <Grid Margin="0,5,0,0" Height="22">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="4*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="*氏名:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1"/>
+                        <Viewbox Width="16" Height="16" Grid.Column="1">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="Green" Data="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="*氏名:" Grid.Column="0" VerticalAlignment="Center" Margin="0,3"/>
+                        <TextBox x:Name="sname" Grid.Column="2" Style="{StaticResource WatermarkTextBox}" Tag="フルネーム"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="その他" >
-                <StackPanel Margin="10" Height="22" >
+                <StackPanel Margin="10">
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="4*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="担当者:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <Grid Grid.Column="1">
+                        <Viewbox Width="16" Height="16" Grid.Column="1">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="Green" Data="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="担当者:" Grid.Column="0" VerticalAlignment="Center" Margin="0,3"/>
+                        <Grid Grid.Column="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="foreigntext1" Text="foreign " Grid.Column="0" Visibility="Collapsed"/>
-                            <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Height="22"/>
+                            <TextBox x:Name="name" HorizontalAlignment="Stretch" Grid.Column="1" Height="22" Style="{StaticResource WatermarkTextBox}" Tag="例: 5I山田"/>
                         </Grid>
-                        <Button x:Name="auth" Grid.Column="2" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" Width="90" Margin="5,0" Click="auth_Click" Style="{StaticResource SystemAero2Style}" Background="#FFE1E1E1" BorderBrush="#FFADADAD">
-                            <TextBlock Text="Use Credential" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Button x:Name="auth" Grid.Column="3" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="110" Margin="5,0" Click="auth_Click" Style="{StaticResource SystemAero2Style}" Background="#FFE1E1E1" BorderBrush="#FFADADAD">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Viewbox Width="16" Height="16">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Fill="Black" Data="M12,12H19C18.47,16.11 15.72,19.78 12,20.92V12H5V6.3L12,3.19M12,1L3,5V11C3,16.55 6.84,21.73 12,23C17.16,21.73 21,16.55 21,11V5L12,1Z" />
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Text="ドメイン認証を使用"/>
+                            </StackPanel>
                         </Button>
                     </Grid>
-
                 </StackPanel>
             </GroupBox>
         </StackPanel>
@@ -70,7 +93,7 @@
                     <TextBlock Text="キャンセル" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
                 <Button x:Name="save" Width="90" Height="22" Margin="5,0" Background="#FFE1E1E1" BorderBrush="#FFADADAD" Style="{StaticResource SystemAero2Style}" Click="save_Click">
-                    <TextBlock Text="保存" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Text="保存(A)" VerticalAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight"/>
                 </Button>
             </StackPanel>
         </Border>
