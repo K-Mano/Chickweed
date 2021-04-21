@@ -56,22 +56,61 @@ namespace Chickweed
     }
     public struct DeviceInfo
     {
+        /// <summary>
+        /// 物理アドレス
+        /// </summary>
         public int[] PhysicalAddress;
+
+        /// <summary>
+        /// 学籍番号
+        /// </summary>
         public string StudentNumber;
+
+        /// <summary>
+        /// 製造元
+        /// </summary>
         public string Vendor;
+
+        /// <summary>
+        /// OS名
+        /// </summary>
         public string OSName;
+
+        /// <summary>
+        /// OSのリリースID(Windows10のみ)
+        /// </summary>
         public string ReleaseID;
+
+        /// <summary>
+        /// OSのメジャーバージョン
+        /// </summary>
         public string MajorVersion;
+
+        /// <summary>
+        /// OSのマイナーバージョン
+        /// </summary>
         public string MinorVersion;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string DeviceName;
+
+        /// <summary>
+        /// 学生の名前
+        /// </summary>
         public string StudentName;
+
+        /// <summary>
+        /// 入力者名
+        /// </summary>
         public string CreatorName;
     }
 
     public enum TaskDialogResult
     {
         CANCEL = 0,
-        RETRY = 1
+        RETRY  = 1
     }
     public partial class MainWindow : Window
     {
@@ -83,9 +122,7 @@ namespace Chickweed
             InitializeComponent();
         }
 
-        /// <summary>
-        /// MainWindowのウィンドウハンドル取得
-        /// </summary>
+        // MainWindowのウィンドウハンドル取得
         public IntPtr Handle
         {
             get
@@ -111,9 +148,7 @@ namespace Chickweed
             public DateTime DExpireDate;
         }
 
-        /// <summary>
-        /// 各クラスの初期化
-        /// </summary>
+        // 各クラスの初期化
 
         NetworkAdapter network = new NetworkAdapter();
         HardwareInfo reg = new HardwareInfo();
@@ -121,9 +156,7 @@ namespace Chickweed
 
         public DeviceInfo info = new DeviceInfo();
 
-        /// <summary>
-        /// データの取得処理
-        /// </summary>
+        // データの取得処理
 
         private void Setup()
         {
@@ -137,7 +170,7 @@ namespace Chickweed
                 {
                     appversion.Text = "バージョン " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                    info.ReleaseID = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
+                    info.ReleaseID    = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "").ToString();
                     info.MajorVersion = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild", "").ToString();
                     info.MinorVersion = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "UBR", "").ToString();
 
@@ -147,26 +180,18 @@ namespace Chickweed
                     releaseid.Text = info.ReleaseID;
 
                     SupportData data = JudgeVersion(info.ReleaseID, dateTime);
-                    support.Text = data.WExpireDate.ToString("yyyy年MM月dd日まで");
-                    active.Text = data.DExpireDate.ToString("yyyy年MM月31日まで");
-                    maker.Text = reg.GetHardwareVendorName();
-                    sysname.Text = reg.GetHardwareModelName();
+
+                    support.Text    = data.WExpireDate.ToString("yyyy年MM月dd日まで");
+                    active.Text     = data.DExpireDate.ToString("yyyy年MM月31日まで");
+                    evaluation.Text = data.EvaluationText;
+                    maker.Text      = reg.GetHardwareVendorName();
+                    sysname.Text    = reg.GetHardwareModelName();
 
                     NetworkInterface adapter = network.SearchAdapterTypeFromString(NetworkInterfaceType.Wireless80211, "Wi-Fi");
 
                     adaptername.Text = network.GetAdapterName(adapter);
-                    vendorname.Text = network.GetAdapterVendor(adapter);
-                    phynumber.Text = network.GetMacAddressFromAdapter(adapter);
-
-                    /*
-                    if (JudgeWindowsVersion(reg.GetOSFullName()) == "10")
-                    {
-                        evaluation.Text = data.EvaluationText;
-                    }
-                    else {
-                        evaluation.Foreground = new SolidColorBrush(Colors.Red);
-                        evaluation.Text = "IT管理委員は資料を見て評価してください";
-                    }*/
+                    vendorname.Text  = network.GetAdapterVendor(adapter);
+                    phynumber.Text   = network.GetMacAddressFromAdapter(adapter);
                 }
                 catch (Exception)
                 {
@@ -179,13 +204,13 @@ namespace Chickweed
                     using (TaskDialog errordialog = new TaskDialog())
                     {
 
-                        errordialog.Caption = "Chickweed™ 評価システム";
+                        errordialog.Caption = "Chickweed 評価システム";
                         errordialog.InstructionText = "一部の情報を取得できませんでした";
-                        errordialog.Text = "評価に必要な情報が不足しています。タスクを選択してください。";
+                        errordialog.Text = "評価に必要な情報が不足しています("+errorcount+"項目)。タスクを選択してください。";
                         errordialog.Icon = TaskDialogStandardIcon.Error;
                         errordialog.OwnerWindowHandle = Handle;
                         errordialog.HyperlinksEnabled = true;
-                        errordialog.FooterText = "再度実行しても評価ができない場合は<a href=\"./Chickweedマニュアル.pdf\">マニュアル</a>に沿って解決または手動で評価してください。";
+                        errordialog.FooterText = "再度実行しても評価ができない場合は<a href=\"./Chickweedマニュアル.pdf\">マニュアル</a>に沿って解決してください。";
 
                         var retry = new TaskDialogCommandLink("retry", "再度評価を実施する(&R)\n一時的な問題はこれらによって解決する可能性があります。");
                         retry.Default = true;
@@ -216,11 +241,20 @@ namespace Chickweed
                         case TaskDialogResult.RETRY:
                             continue;
                         case TaskDialogResult.CANCEL:
-                            errorcount = 0;
-                            break;
+                            return;
                     }
                 }
             } while (errorcount != 0);
+            TaskDialog success = new TaskDialog
+            {
+                Caption = "Chickweed™",
+                InstructionText = "評価終了",
+                Text = "評価を正常に完了しました",
+                OwnerWindowHandle = Handle,
+                Icon = TaskDialogStandardIcon.Information
+            };
+            success.Show();
+
         }
         private void InitPlugins()
         {
@@ -590,6 +624,8 @@ namespace Chickweed
 
         public SupportData JudgeVersion(string id, DateTime date)
         {
+            const string allowed = "申請許可";
+            const string denied  = "申請不可(アップデートが必要です)";
             SupportData support = new SupportData();
             //サポート期間の定数
             const int supportPeriod = 18;
@@ -622,17 +658,17 @@ namespace Chickweed
                 case -1:
                     evaluation.Foreground = new SolidColorBrush(Colors.Green);
                     support.IsSupportAvailable = true;
-                    support.EvaluationText = "申請許可";
+                    support.EvaluationText = allowed;
                     break;
                 case 0:
                     evaluation.Foreground = new SolidColorBrush(Colors.Red);
                     support.IsSupportAvailable = false;
-                    support.EvaluationText = "申請不可(アップデートが必要です)";
+                    support.EvaluationText = denied;
                     break;
                 case 1:
                     evaluation.Foreground = new SolidColorBrush(Colors.Red);
                     support.IsSupportAvailable = false;
-                    support.EvaluationText = "申請不可(アップデートが必要です)";
+                    support.EvaluationText = denied;
                     break;
             }
 
@@ -689,23 +725,6 @@ namespace Chickweed
             }
             //string[] winver_splitted = winver.Split(' ');
             //return "8"; //winver_splitted[2];
-        }
-
-        private void cred_Click(object sender, RoutedEventArgs e)
-        {
-            VistaPrompt cred = new VistaPrompt
-            {
-                Domain = "ANAN-NCT",
-                ShowSaveCheckBox = true,
-                Title = "資格情報が必要です",
-                Message = "ドメイン: ANAN-NCT"
-            };
-
-            DialogResult result = cred.ShowDialog();
-            if (result == CredentialManagement.DialogResult.OK)
-            {
-
-            }
         }
 
         private void RunCMD(string strcmd)

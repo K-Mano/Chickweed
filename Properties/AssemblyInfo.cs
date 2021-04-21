@@ -1,23 +1,24 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle("ITToolKit™")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Chickweed")]
+[assembly: AssemblyDescription("特定の環境下におけるネットワーク管理に必要な機能を提供します。")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("K-Mano x Naoki Takahashi")]
-[assembly: AssemblyProduct("ITToolKit™")]
-[assembly: AssemblyCopyright("Copyright © K-Mano 2020")]
+[assembly: AssemblyCompany("ITToolKit Team")]
+[assembly: AssemblyProduct("Chickweed Powered by ITToolKit™")]
+[assembly: AssemblyCopyright("Copyright © ITToolKit Team 2018-2020 All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // ComVisible を false に設定すると、このアセンブリ内の型は COM コンポーネントから
 // 参照できなくなります。COM からこのアセンブリ内の型にアクセスする必要がある場合は、
 // その型の ComVisible 属性を true に設定してください。
-[assembly: ComVisible(true)]
+[assembly: ComVisible(false)]
 
 //ローカライズ可能なアプリケーションのビルドを開始するには、
 //.csproj ファイルの <UICulture>CultureYouAreCodingWith</UICulture> を
@@ -49,5 +50,7 @@ using System.Windows;
 // すべての値を指定するか、次を使用してビルド番号とリビジョン番号を既定に設定できます
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.2.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage("ja-JP")]
+[assembly: Guid("02477733-F54B-49AB-A959-3F9E57B60B94")]
